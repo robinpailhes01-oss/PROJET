@@ -53,6 +53,17 @@ resto), pas d'abonnement annuel, parce que le lieu sera loin des bassins d'emplo
 7. Les ERP, la licence IV, les normes spa/piscine et l'accessibilité PMR n'ont pas
    été chiffrés.
 
-## 6. Les références citées
+## 6. Décisions du 19/11/2026
+- **Cœur du projet :** wellness + sport + quelques logements insolites. Le bar et le
+  restaurant sont un complément, parce que c'est le point fort de l'associé A.
+- **Périmètre :** on étudie tous les scénarios, du plus petit au plus gros, y compris
+  la reprise d'un lieu qui tourne déjà et la location (ne pas être propriétaire).
+- **Budget :** 30-50 k€ au minimum, environ 200 k€ au total.
+- **Zone :** priorité Montpellier, mais ouvert à tout le Sud de la France.
+- **Rôles confirmés :** Robin s'occupe du digital et du bateau ; l'associé A s'occupe
+  de la restauration et du bar.
+- « Blache Palace » = **Plage Palace**, un hôtel 5*.
+
+## 7. Les références citées
 Villa Occitania, Domaine de Verchant (Castelnau-le-Lez), une offre de tentes lodge
 vers Montpellier, un « Blache Palace » (nom à vérifier) et un sauna collectif à Paris.
