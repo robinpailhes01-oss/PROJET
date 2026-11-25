@@ -1,0 +1,486 @@
+<title>Catalogue Miroir & Sauna</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout : un catalogue qui se feuillette — grande image d'ouverture, puis des planches (formules, terrains, produits) où l'image porte l'ambiance et le tableau porte le prix. */
+:root{
+  --bg:#eef1ee; --surface:#ffffff; --ink:#15211f; --muted:#56655f; --line:#cfd8d2;
+  --lake:#1d5a57; --lake-soft:#dcebe7; --ember:#b8651b; --ember-soft:#f6e6d2;
+  --ok:#2f7a4b; --warn:#a8640a; --bad:#a83a2a;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Instrument Sans","Helvetica Neue","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#101917; --surface:#18231f; --ink:#e8efeb; --muted:#9aaaa3; --line:#2c3a35;
+  --lake:#7cc4bd; --lake-soft:#1c312e; --ember:#e9a45c; --ember-soft:#33271a;
+  --ok:#6fc48d; --warn:#e2ab52; --bad:#e58a78; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#101917; --surface:#18231f; --ink:#e8efeb; --muted:#9aaaa3; --line:#2c3a35;
+  --lake:#7cc4bd; --lake-soft:#1c312e; --ember:#e9a45c; --ember-soft:#33271a;
+  --ok:#6fc48d; --warn:#e2ab52; --bad:#e58a78; color-scheme:dark }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
+h1{font-size:clamp(2.1rem,6vw,3.9rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.6vw,2.3rem);font-weight:700;letter-spacing:-.015em}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0;max-width:68ch}
+a{color:var(--lake)}
+a:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ember)}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+section{padding-block:3.2rem;border-top:1px solid var(--line)}
+.stack{display:flex;flex-direction:column;gap:1rem}
+.stack-lg{display:flex;flex-direction:column;gap:1.8rem}
+
+/* Ouverture */
+.hero{padding-block:1.2rem 0}
+.hero figure{margin:0;position:relative;border-radius:6px;overflow:hidden}
+.hero img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.hero-text{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem;padding-block:2rem 2.6rem;align-items:end}
+.hero-text > *{min-width:0}
+.lede{font-size:1.12rem}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+.facts div{padding:1rem 1rem 1rem 0;min-width:0}
+.facts b{display:block;font-family:var(--display);font-size:1.7rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.facts span{font-size:.88rem;color:var(--muted)}
+figcaption,.cap{font-size:.78rem;color:var(--muted);padding-top:.35rem}
+
+/* Verdict */
+.verdict{background:var(--lake-soft);border-left:4px solid var(--lake);padding:1.2rem 1.4rem;border-radius:0 6px 6px 0}
+.verdict p + p{margin-top:.6rem}
+
+/* Formules */
+.formule{display:grid;grid-template-columns:1fr 1.15fr;gap:1.8rem;align-items:start;padding-block:1.6rem;border-top:1px solid var(--line)}
+.formule:first-of-type{border-top:0;padding-top:0}
+.formule > *{min-width:0}
+.formule img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.price{font-family:var(--display);font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.tag{display:inline-block;align-self:flex-start;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .55rem;border-radius:3px;background:var(--ember-soft);color:var(--ember)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .7rem .5rem 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding-right:0}
+tr.total td{border-top:2px solid var(--ink);border-bottom:0;font-weight:600}
+.src{font-size:.72rem;font-weight:600;padding:.08rem .35rem;border-radius:3px;white-space:nowrap}
+.src.v{background:var(--lake-soft);color:var(--lake)}
+.src.e{background:var(--ember-soft);color:var(--ember)}
+.src.n{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.kv div{min-width:0;border-top:1px solid var(--line);padding-top:.5rem}
+.kv b{display:block;font-family:var(--display);font-size:1.25rem;font-variant-numeric:tabular-nums}
+.kv span{font-size:.82rem;color:var(--muted)}
+
+/* Terrains */
+.terrains{display:grid;grid-template-columns:repeat(2,1fr);gap:1.8rem}
+.terrain{min-width:0;display:flex;flex-direction:column;gap:.55rem}
+.terrain img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.score{font-family:var(--display);font-variant-numeric:tabular-nums;font-weight:700}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:.2rem .9rem;font-size:.9rem;margin:0}
+.dl dt{color:var(--muted)} .dl dd{margin:0}
+.lvl-ok{color:var(--ok);font-weight:600}.lvl-warn{color:var(--warn);font-weight:600}.lvl-bad{color:var(--bad);font-weight:600}
+
+/* Barres de prix posé */
+.bars{display:grid;grid-template-columns:minmax(120px,210px) 1fr;gap:.55rem 1rem;align-items:center;font-size:.9rem}
+.bars .lbl{min-width:0}
+.track{position:relative;height:22px;background:linear-gradient(to right,var(--line) 1px,transparent 1px) 0 0/16.666% 100%;border-right:1px solid var(--line)}
+.bar{position:absolute;top:3px;bottom:3px;background:var(--lake);border-radius:2px}
+.bar.alt{background:var(--ember)}
+.bar.end span{left:auto;right:calc(100% + 6px)}
+.bar span{position:absolute;left:calc(100% + 6px);top:-2px;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--ink)}
+.axis{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:.35rem;vertical-align:-1px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem}
+.duo > *{min-width:0}
+.duo img,.trio img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.trio > *{min-width:0}
+ol.steps{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.7rem;max-width:70ch}
+ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem;max-width:70ch}
+footer{padding-block:2rem 3rem;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+footer p + p{margin-top:.5rem}
+
+@media (max-width:760px){
+  .hero-text,.formule,.terrains,.duo{grid-template-columns:1fr}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .kv,.trio{grid-template-columns:1fr}
+  .bars{grid-template-columns:1fr;gap:.15rem}
+  .bars .track{margin-bottom:.6rem;margin-right:5.5rem}
+}
+@media print{
+  section{break-inside:auto;padding-block:1.6rem}
+  .formule,.terrain,.duo,table,.verdict,.bars{break-inside:avoid}
+  h2,h3{break-after:avoid}
+  body{font-size:11.5pt}
+}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <figure>
+    <img src="img/11-hero.jpg" alt="Au crépuscule, une maison aux façades miroir au bord d'un lac et un sauna flottant relié par un ponton.">
+  </figure>
+  <p class="cap">Visuel d'ambiance généré par IA. Ce n'est pas une photo de produit ni d'un lieu réel.</p>
+  <div class="hero-text">
+    <div class="stack">
+      <p class="eyebrow">Catalogue de projet · 25 novembre 2026</p>
+      <h1>Maisons miroir, sauna et eau calme</h1>
+    </div>
+    <p class="lede">Trois formules chiffrées de 100 à 300&nbsp;k€, cinq types de terrain, et le prix réel des modules et des saunas, pour un petit site de logements vitrés avec sauna dans le Sud de la France.</p>
+  </div>
+  <div class="facts">
+    <div><b>84&nbsp;900&nbsp;€</b><span>Maison ÖÖD Signature, 21&nbsp;m², prix public vérifié sur le site du fabricant</span></div>
+    <div><b>≈&nbsp;115&nbsp;k€</b><span>La même maison posée et raccordée dans le Sud (estimation)</span></div>
+    <div><b>19–21&nbsp;k€</b><span>Sauna flottant 8–10 places, prix relevé chez deux fabricants suédois</span></div>
+    <div><b>230&nbsp;€</b><span>Prix de nuit médian retenu pour les prévisions</span></div>
+  </div>
+</header>
+
+<section class="stack-lg" id="verdict">
+  <div class="stack">
+    <p class="eyebrow">L'essentiel</p>
+    <h2>Ce que l'étude change à l'idée de départ</h2>
+  </div>
+  <div class="verdict">
+    <p><strong>Avec 100 à 300&nbsp;k€, on achète une à deux maisons miroir de la gamme ÖÖD, pas quatre.</strong> Une Signature coûte 84&nbsp;900&nbsp;€ départ usine et environ 115&nbsp;k€ une fois transportée, posée et raccordée.</p>
+    <p><strong>Une seule maison ne fait pas vivre le site.</strong> Dans nos prévisions, il faut au moins deux logements, et de préférence quatre, pour couvrir les charges fixes.</p>
+    <p><strong>Le terrain se décide sur l'urbanisme avant le paysage.</strong> Hors camping autorisé ou zone constructible, une maison de plus de 20&nbsp;m² demande un permis de construire, et les zones agricoles ou naturelles l'interdisent sans dérogation.</p>
+  </div>
+  <ul class="plain">
+    <li><strong>Le sauna flottant est l'élément le plus différenciant et le moins cher du projet.</strong> Les recherches n'en ont trouvé que deux en France, à Brest et à Libourne, ouverts en 2026 ; aucun sur un lac ou un étang.</li>
+    <li><strong>ÖÖD propose un partenariat où le fabricant reste propriétaire des maisons</strong> et prend une part des loyers (33&nbsp;% en moyenne dans son simulateur). C'est la seule voie qui met quatre maisons miroir dans ce budget, mais ÖÖD exige un permis valide, des réseaux en place et une clientèle existante.</li>
+    <li><strong>ÖÖD est déjà présent en France.</strong> Deux maisons miroir ont ouvert en avril 2026 dans l'Aisne (Sûr Jumigny), et un camping 4 étoiles de Seignosse, dans les Landes, en exploite depuis l'été 2026. Aucune maison miroir avec sauna n'a été trouvée en Occitanie ni en Provence, mais Airbnb et Booking n'ont pas pu être fouillés.</li>
+    <li><strong>La chaleur d'été derrière les vitrages n'est documentée nulle part.</strong> La fiche ÖÖD ne mentionne pas de climatisation. C'est le premier point à exiger par écrit avant de commander.</li>
+  </ul>
+</section>
+
+<section class="stack-lg" id="formules">
+  <div class="stack">
+    <p class="eyebrow">Trois formules</p>
+    <h2>Du pilote à 100&nbsp;k€ au site sur l'eau à 300&nbsp;k€</h2>
+    <p class="muted">Montants hors taxes. <span class="src v">vérifié</span> = relu sur le site du fabricant. <span class="src n">relevé</span> = prix trouvé en ligne, pas encore recoupé. <span class="src e">estimation</span> = ordre de grandeur à remplacer par un devis. Le terrain n'est pas acheté : il est loué ou apporté par un partenaire.</p>
+  </div>
+
+  <article class="formule">
+    <div class="stack">
+      <img src="img/00-garrigue.jpg" alt="Maison miroir sur une terrasse en bois dans une pinède, crête calcaire au fond.">
+      <p class="cap">Visuel d'ambiance généré par IA.</p>
+    </div>
+    <div class="stack">
+      <span class="tag">Formule 1 · Le Pilote</span>
+      <p class="price">80 à 105&nbsp;k€</p>
+      <h3>Une maison miroir, un sauna panoramique, un bain froid</h3>
+      <p>Un seul logement de 18&nbsp;m², du type MODO ONE, chez un domaine viticole qui accueille déjà du public. Il sert à mesurer le prix que les clients acceptent avant d'investir plus.</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Poste</th><th>Source</th><th class="r">Budget</th></tr>
+        <tr><td>Maison miroir d'entrée de gamme, 18&nbsp;m², module seul</td><td><span class="src n">relevé</span></td><td class="r">40 à 65&nbsp;k€</td></tr>
+        <tr><td>Transport, grue, fondations, raccordements, terrasse, climatisation</td><td><span class="src e">estimation</span></td><td class="r">25&nbsp;k€</td></tr>
+        <tr><td>Sauna tonneau panoramique 6 places, bain froid simple, douche</td><td><span class="src n">relevé</span></td><td class="r">13 à 15&nbsp;k€</td></tr>
+        <tr class="total"><td>Total</td><td></td><td class="r">≈ 80 à 105&nbsp;k€</td></tr>
+      </table></div>
+      <div class="kv">
+        <div><b>48&nbsp;k€</b><span>Recettes par an en 3ᵉ année, hypothèse médiane</span></div>
+        <div><b>+12&nbsp;k€</b><span>Excédent d'exploitation médian, avant emprunt et salaires</span></div>
+        <div><b>−2&nbsp;k€</b><span>Le même excédent en hypothèse prudente</span></div>
+      </div>
+      <p class="muted">À retenir : c'est un test, pas un revenu. Moins de 20&nbsp;m², donc une simple déclaration préalable si le terrain l'autorise.</p>
+    </div>
+  </article>
+
+  <article class="formule">
+    <div class="stack">
+      <img src="img/01-vignes.jpg" alt="Maison miroir en bordure de vignes avec terrasse et bain nordique fumant.">
+      <p class="cap">Visuel d'ambiance généré par IA.</p>
+    </div>
+    <div class="stack">
+      <span class="tag">Formule 2 · Le Hameau</span>
+      <p class="price">170 à 220&nbsp;k€</p>
+      <h3>Deux maisons miroir et un espace chaud-froid complet</h3>
+      <p>Deux logements et un vrai circuit sauna, bain froid, bain chaud, sur la parcelle isolée d'un camping haut de gamme ou d'un domaine.</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Poste</th><th>Source</th><th class="r">Budget</th></tr>
+        <tr><td>2 maisons miroir 18&nbsp;m² posées et raccordées</td><td><span class="src e">estimation</span></td><td class="r">130 à 180&nbsp;k€</td></tr>
+        <tr><td>Sauna extérieur à baie panoramique, 4–6 places</td><td><span class="src n">relevé</span></td><td class="r">16&nbsp;k€</td></tr>
+        <tr><td>Bain froid professionnel et bain nordique 6 places</td><td><span class="src n">relevé</span></td><td class="r">11&nbsp;k€</td></tr>
+        <tr><td>Douche, terrasse, raccordement électrique</td><td><span class="src e">estimation</span></td><td class="r">4&nbsp;k€</td></tr>
+        <tr><td>Chemins, éclairage, plantations</td><td><span class="src e">estimation</span></td><td class="r">10&nbsp;k€</td></tr>
+        <tr class="total"><td>Total</td><td></td><td class="r">≈ 170 à 220&nbsp;k€</td></tr>
+      </table></div>
+      <div class="kv">
+        <div><b>97&nbsp;k€</b><span>Recettes par an en 3ᵉ année, hypothèse médiane</span></div>
+        <div><b>+39&nbsp;k€</b><span>Excédent d'exploitation médian, avant emprunt et salaires</span></div>
+        <div><b>+9&nbsp;k€</b><span>Le même excédent en hypothèse prudente</span></div>
+      </div>
+      <p class="muted">Variante : une seule ÖÖD Signature et un sauna miroir ÖÖD Mini pour 165 à 180&nbsp;k€. L'image est plus forte, mais il n'y a qu'un logement à louer.</p>
+    </div>
+  </article>
+
+  <article class="formule">
+    <div class="stack">
+      <img src="img/02-lac.jpg" alt="Au lever du jour, maison miroir sur la berge d'un étang et sauna flottant au bout d'un ponton.">
+      <p class="cap">Visuel d'ambiance généré par IA.</p>
+    </div>
+    <div class="stack">
+      <span class="tag">Formule 3 · Le Lac</span>
+      <p class="price">275 à 310&nbsp;k€</p>
+      <h3>Deux ÖÖD Signature autour d'un plan d'eau et un sauna flottant</h3>
+      <p>Le format le plus photogénique : les maisons de la marque de référence et un sauna de 8 à 10 places sur l'eau, vendu aussi en séances aux clients extérieurs.</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Poste</th><th>Source</th><th class="r">Budget</th></tr>
+        <tr><td>2 ÖÖD Signature 21&nbsp;m², modules seuls (2 × 84&nbsp;900&nbsp;€)</td><td><span class="src v">vérifié</span></td><td class="r">170&nbsp;k€</td></tr>
+        <tr><td>Transport depuis l'Estonie, grue, fondations, raccordements, terrasses</td><td><span class="src e">estimation</span></td><td class="r">50 à 70&nbsp;k€</td></tr>
+        <tr><td>Sauna flottant suédois 8–10 places, clé en main</td><td><span class="src n">relevé</span></td><td class="r">19 à 21&nbsp;k€</td></tr>
+        <tr><td>Transport, mise à l'eau, ancrage, ponton de baignade, dossier</td><td><span class="src e">estimation</span></td><td class="r">20 à 32&nbsp;k€</td></tr>
+        <tr><td>Bain nordique, chemins, éclairage</td><td><span class="src e">estimation</span></td><td class="r">15&nbsp;k€</td></tr>
+        <tr class="total"><td>Total</td><td></td><td class="r">≈ 275 à 310&nbsp;k€</td></tr>
+      </table></div>
+      <div class="kv">
+        <div><b>97&nbsp;k€</b><span>Recettes des 2 maisons en 3ᵉ année, hypothèse médiane</span></div>
+        <div><b>+39&nbsp;k€</b><span>Excédent d'exploitation médian des maisons</span></div>
+        <div><b>17–27&nbsp;k€</b><span>Recettes possibles du sauna ouvert aux extérieurs (estimation)</span></div>
+      </div>
+      <p class="muted">Variante partenariat : quatre Signature financées en partie par ÖÖD (mise indicative de 30 à 40&nbsp;k€ par maison) pour 220 à 310&nbsp;k€ au total. Après la part d'ÖÖD, l'excédent médian tombe à environ 35&nbsp;k€, et les maisons ne vous appartiennent pas.</p>
+    </div>
+  </article>
+</section>
+
+<section class="stack-lg" id="terrains">
+  <div class="stack">
+    <p class="eyebrow">Cinq terrains</p>
+    <h2>Le même projet dans cinq paysages</h2>
+    <p class="muted">Note sur 50 : dix critères notés sur 5 (richesse de la clientèle, tourisme, prix de nuit, saison, concurrence, foncier, urbanisme, accès, distance à Montpellier, eau et partenaires). Ce sont des jugements d'analyste, pas des mesures.</p>
+  </div>
+  <div class="terrains">
+    <article class="terrain">
+      <img src="img/00-garrigue.jpg" alt="Maison miroir dans la pinède et la garrigue.">
+      <h3>Pinède et garrigue · Pic Saint-Loup</h3>
+      <dl class="dl">
+        <dt>Note</dt><dd><span class="score">36 / 50</span>, premier ex æquo</dd>
+        <dt>Nuit visée</dt><dd class="num">220 à 280&nbsp;€</dd>
+        <dt>Atout</dt><dd>À 30 minutes de Montpellier et des communes les plus aisées de l'Hérault</dd>
+        <dt>Urbanisme</dt><dd><span class="lvl-warn">Difficile</span> : risque incendie, débroussaillement sur 50&nbsp;m</dd>
+      </dl>
+    </article>
+    <article class="terrain">
+      <img src="img/01-vignes.jpg" alt="Maison miroir au bord des vignes.">
+      <h3>Vignoble · Uzès et Pont du Gard</h3>
+      <dl class="dl">
+        <dt>Note</dt><dd><span class="score">36 / 50</span>, premier ex æquo</dd>
+        <dt>Nuit visée</dt><dd class="num">250 à 300&nbsp;€</dd>
+        <dt>Atout</dt><dd>Résidents étrangers, TGV à Nîmes et Avignon, domaines en quête de diversification</dd>
+        <dt>Urbanisme</dt><dd><span class="lvl-warn">Moyen</span> : zone agricole, il faut un secteur déjà dérogatoire ou un camping</dd>
+      </dl>
+    </article>
+    <article class="terrain">
+      <img src="img/08-vue-aerienne.jpg" alt="Vue aérienne : quatre maisons miroir autour d'un petit étang avec un sauna flottant.">
+      <h3>Étang privé · plaine du Rhône et Gard</h3>
+      <dl class="dl">
+        <dt>Référence</dt><dd>Un domaine de 20 cabanes sur un lac à Sorgues affiche 265 à 370&nbsp;€ la nuit pour deux</dd>
+        <dt>Nuit visée</dt><dd class="num">250 à 320&nbsp;€</dd>
+        <dt>Atout</dt><dd>Seul terrain qui permet le sauna flottant ; anciennes gravières et retenues de domaines</dd>
+        <dt>Urbanisme</dt><dd><span class="lvl-bad">Long</span> : zones inondables, loi sur l'eau, 12 à 24 mois</dd>
+      </dl>
+    </article>
+    <article class="terrain">
+      <img src="img/07-luberon.jpg" alt="Maison miroir parmi les oliviers et la lavande, bain nordique au premier plan.">
+      <h3>Oliviers et lavande · Luberon, Alpilles</h3>
+      <dl class="dl">
+        <dt>Note</dt><dd><span class="score">30 à 32 / 50</span></dd>
+        <dt>Nuit visée</dt><dd class="num">300 à 400&nbsp;€</dd>
+        <dt>Atout</dt><dd>Le prix de nuit le plus élevé du Sud, clientèle internationale</dd>
+        <dt>Urbanisme</dt><dd><span class="lvl-bad">Quasi fermé</span> : sites classés, parcs naturels. Seulement chez un hôtel ou un domaine existant</dd>
+      </dl>
+    </article>
+    <article class="terrain">
+      <img src="img/06-lac-alpin.jpg" alt="Maison miroir au-dessus d'un lac alpin turquoise, sommets enneigés.">
+      <h3>Lac de montagne · Annecy, Bourget</h3>
+      <dl class="dl">
+        <dt>Note</dt><dd><span class="score">32 / 50</span></dd>
+        <dt>Nuit visée</dt><dd class="num">300 à 400&nbsp;€</dd>
+        <dt>Atout</dt><dd>Double saison et vraie culture du sauna</dd>
+        <dt>Urbanisme</dt><dd><span class="lvl-bad">Quasi fermé</span> : lacs publics, bande inconstructible, loin de Montpellier</dd>
+      </dl>
+    </article>
+    <article class="terrain">
+      <img src="img/09-nuit.jpg" alt="De nuit, maison miroir éclairée de l'intérieur sous la Voie lactée.">
+      <h3>Ce que le terrain doit avoir, où qu'il soit</h3>
+      <ul class="plain">
+        <li>Un accès pour un semi-remorque et une grue : la maison pèse 10 tonnes et arrive en un bloc.</li>
+        <li>L'eau, l'électricité et l'assainissement déjà sur place ou en limite de parcelle.</li>
+        <li>De l'ombre l'après-midi. Les vitrages au nord ou à l'est.</li>
+        <li>Des rideaux occultants : la nuit, lumière allumée, l'effet miroir s'inverse.</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="stack-lg" id="logements">
+  <div class="stack">
+    <p class="eyebrow">Catalogue · logements</p>
+    <h2>Les maisons vitrées et leur prix une fois posées</h2>
+    <p>Le prix du module n'est qu'une partie de la facture. Transport, grue, fondations, raccordements, terrasse et climatisation ajoutent 20 à 35&nbsp;k€ par maison.</p>
+  </div>
+
+  <div class="duo">
+    <div class="stack">
+      <img src="img/04-interieur.jpg" alt="Intérieur d'une petite maison vitrée : lit face aux baies, vue sur une oliveraie.">
+      <p class="cap">Visuel d'ambiance généré par IA. Les photos officielles sont sur les sites des fabricants, liés dans les sources.</p>
+    </div>
+    <div class="stack">
+      <h3>La gamme ÖÖD, prix publics du fabricant</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Modèle</th><th class="r">Surface</th><th class="r">Prix départ usine</th></tr>
+        <tr><td>Glämping House</td><td class="r">9&nbsp;m²</td><td class="r">29&nbsp;700&nbsp;€</td></tr>
+        <tr><td><strong>Signature House</strong></td><td class="r">21,1&nbsp;m²</td><td class="r"><strong>84&nbsp;900&nbsp;€</strong></td></tr>
+        <tr><td>Mobile House (sur châssis)</td><td class="r">21,1&nbsp;m²</td><td class="r">89&nbsp;900&nbsp;€</td></tr>
+        <tr><td>Extended House</td><td class="r">26,3&nbsp;m²</td><td class="r">94&nbsp;900&nbsp;€</td></tr>
+        <tr><td>Möön House</td><td class="r">26,7&nbsp;m²</td><td class="r">139&nbsp;900&nbsp;€</td></tr>
+        <tr><td>The Big Monolith</td><td class="r">40,9&nbsp;m²</td><td class="r">149&nbsp;900&nbsp;€</td></tr>
+      </table></div>
+      <p class="muted">Lus sur oodhouse.com le 25 novembre 2026. Le site ne dit pas si ces prix sont hors taxes. La Signature mesure 6,40 × 3,40 × 3,35&nbsp;m, pèse environ 10 tonnes et comprend kitchenette, salle d'eau et plancher chauffant électrique. Transport, fondations et raccordements sont à la charge de l'acheteur.</p>
+    </div>
+  </div>
+
+  <div class="stack">
+    <h3>Prix estimé par maison, posée et raccordée</h3>
+    <div class="legend"><span><i style="background:var(--lake)"></i>ÖÖD</span><span><i style="background:var(--ember)"></i>Autres fabricants</span></div>
+    <div class="bars">
+      <div class="lbl">ÖÖD Glämping · 9&nbsp;m²</div><div class="track"><div class="bar" style="left:25%;width:3.9%"><span>45–52&nbsp;k€</span></div></div>
+      <div class="lbl">Ilumhouse O2M · 23&nbsp;m² · Lettonie</div><div class="track"><div class="bar alt" style="left:33.3%;width:5.6%"><span>60–70&nbsp;k€</span></div></div>
+      <div class="lbl">MODO ONE miroir · 18&nbsp;m² · Tchéquie</div><div class="track"><div class="bar alt" style="left:36.1%;width:13.9%"><span>65–90&nbsp;k€</span></div></div>
+      <div class="lbl">Copacabanon · 16&nbsp;m² · France</div><div class="track"><div class="bar alt" style="left:37.8%;width:5.6%"><span>68–78&nbsp;k€</span></div></div>
+      <div class="lbl">Kodasema Loft Micro · 20&nbsp;m² · Estonie</div><div class="track"><div class="bar alt" style="left:53.9%;width:5.6%"><span>97–107&nbsp;k€</span></div></div>
+      <div class="lbl"><strong>ÖÖD Signature · 21&nbsp;m²</strong></div><div class="track"><div class="bar" style="left:61.1%;width:5.6%"><span>110–120&nbsp;k€</span></div></div>
+      <div class="lbl">Lumipod 5 · 18&nbsp;m² · France</div><div class="track"><div class="bar alt" style="left:66.7%;width:5.6%"><span>120–130&nbsp;k€</span></div></div>
+      <div class="lbl">Lumipod 6 · 26&nbsp;m² · France</div><div class="track"><div class="bar alt end" style="left:86.1%;width:8.3%"><span>155–170&nbsp;k€</span></div></div>
+      <div></div><div class="axis"><span>0</span><span>30</span><span>60</span><span>90</span><span>120</span><span>150</span><span>180&nbsp;k€</span></div>
+    </div>
+    <p class="muted">Estimations hors taxes, sur un terrain déjà desservi par les réseaux. Prix des modules seuls, relevés en ligne et pas encore recoupés : Ilumhouse 35&nbsp;300&nbsp;€, MODO ONE 39&nbsp;900 à 64&nbsp;900&nbsp;€ selon la page consultée, Copacabanon dès 56&nbsp;000&nbsp;€ livré monté, Kodasema Loft Micro 71&nbsp;800&nbsp;€, Lumipod 5 à 99&nbsp;000&nbsp;€, Lumipod 6 à 135&nbsp;000&nbsp;€.</p>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Niveau</th><th>Module conseillé</th><th>Pourquoi</th><th>Réserve</th></tr>
+    <tr><td><strong>Éco</strong></td><td>Maison miroir de 18&nbsp;m², du type MODO ONE</td><td>La moins chère des maisons miroir relevées ; sous le seuil de 20&nbsp;m²</td><td><span class="lvl-bad">Fabricant non confirmé.</span> La vérification n'a trouvé aucune trace indépendante de la société, et ses prix affichés se contredisent. Aucun acompte sans exemplaire visité et garantie écrite. Repli : Ilumhouse ou Copacabanon</td></tr>
+    <tr><td><strong>Cœur</strong></td><td>ÖÖD Signature, 21&nbsp;m²</td><td>La référence visuelle du projet ; la marque aide à vendre la nuit ; revente possible</td><td>Plus de 20&nbsp;m², donc permis de construire hors camping. Climatisation et tenue à la chaleur à faire confirmer</td></tr>
+    <tr><td><strong>Signature</strong></td><td>Lumipod 5 ou 6</td><td>Fabriqué à Lyon : transport court, service après-vente et assurance plus simples</td><td>Le plus cher au mètre carré</td></tr>
+  </table></div>
+</section>
+
+<section class="stack-lg" id="wellness">
+  <div class="stack">
+    <p class="eyebrow">Catalogue · sauna et bains</p>
+    <h2>Le sauna, à terre ou sur l'eau</h2>
+  </div>
+  <div class="trio">
+    <div class="stack"><img src="img/03-sauna-flottant.jpg" alt="Sauna flottant en bois sombre sur un lac au crépuscule, baie vitrée éclairée."><p class="cap">Sauna flottant. Visuel IA.</p></div>
+    <div class="stack"><img src="img/05-espace-wellness.jpg" alt="Sauna cube à façade miroir, bain froid en bois et douche extérieure sur une terrasse."><p class="cap">Sauna miroir et bain froid. Visuel IA.</p></div>
+    <div class="stack"><img src="img/10-sauna-interieur.jpg" alt="Intérieur de sauna en bois avec une paroi vitrée donnant sur un lac."><p class="cap">Vue depuis les bancs. Visuel IA.</p></div>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Équipement</th><th>Capacité</th><th>Source</th><th class="r">Prix</th><th>À savoir</th></tr>
+    <tr><td>ÖÖD Mini Sauna, miroir, 5,5&nbsp;m²</td><td>2–3 pers.</td><td><span class="src v">vérifié</span></td><td class="r">23&nbsp;900&nbsp;€</td><td>Environ 31 à 38&nbsp;k€ posé. Un sauna privatif, pas celui d'un site entier</td></tr>
+    <tr><td>ÖÖD Medium Sauna, 9,5&nbsp;m²</td><td>2–3 pers.</td><td><span class="src v">vérifié</span></td><td class="r">33&nbsp;700&nbsp;€</td><td>Avec vestiaire. Environ 41 à 48&nbsp;k€ posé</td></tr>
+    <tr><td>ÖÖD Large Sauna, 21,1&nbsp;m²</td><td>4–7 pers.</td><td><span class="src v">vérifié</span></td><td class="r">84&nbsp;900&nbsp;€</td><td>Avec salon et douche. Environ 100 à 115&nbsp;k€ posé</td></tr>
+    <tr><td>Sauna extérieur à baie panoramique, gamme Harvia</td><td>4–6 pers.</td><td><span class="src n">relevé</span></td><td class="r">19&nbsp;495&nbsp;€ TTC</td><td>Version 8 places relevée à 25&nbsp;995&nbsp;€ TTC. Nom exact du modèle à confirmer chez le revendeur</td></tr>
+    <tr><td>Sauna tonneau panoramique</td><td>6 pers.</td><td><span class="src n">relevé</span></td><td class="r">8&nbsp;436&nbsp;€ TTC</td><td>Le moins cher pour démarrer</td></tr>
+    <tr><td><strong>Sauna flottant</strong> Villapool Nord « Renée », 7 × 3,8&nbsp;m</td><td>8–10 pers.</td><td><span class="src n">relevé</span></td><td class="r">≈ 21&nbsp;400&nbsp;€</td><td>239&nbsp;900 couronnes suédoises, taxe suédoise incluse. Compter 39 à 53&nbsp;k€ installé avec ponton</td></tr>
+    <tr><td>Sauna flottant Hagängs « Lia »</td><td>n.&nbsp;c.</td><td><span class="src n">relevé</span></td><td class="r">≈ 19&nbsp;300&nbsp;€</td><td>216&nbsp;000 couronnes, livré monté et équipé</td></tr>
+    <tr><td>Bain froid professionnel avec filtration</td><td>1–2 pers.</td><td><span class="src n">relevé</span></td><td class="r">7&nbsp;990&nbsp;€</td><td>Gamme hôtelière : 19&nbsp;600&nbsp;€ HT</td></tr>
+    <tr><td>Bain nordique électrique</td><td>6 pers.</td><td><span class="src n">relevé</span></td><td class="r">4&nbsp;849&nbsp;€ TTC</td><td>Partagé entre clients, il relève des règles des bains collectifs</td></tr>
+  </table></div>
+  <div class="duo">
+    <div class="stack">
+      <h3>Ce que font les deux saunas flottants français</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Lieu</th><th>Séance</th><th class="r">Privatisation</th></tr>
+        <tr><td>Brest, port du Moulin-Blanc, 15 places, ouvert en mai 2026</td><td class="num">25&nbsp;€ pour 1&nbsp;h&nbsp;15</td><td class="r">180&nbsp;€</td></tr>
+        <tr><td>Libourne, sur la Dordogne, 6 places, ouvert en octobre 2026</td><td class="num">20&nbsp;€ pour 1&nbsp;h&nbsp;30</td><td class="r">100&nbsp;€</td></tr>
+      </table></div>
+      <p class="muted">Dates d'ouverture confirmées par la presse ; tarifs relevés sur une seule source chacun. Le bateau-sauna de Brest aurait coûté 190&nbsp;000&nbsp;€ : il navigue et accueille du public. Un sauna amarré sans moteur sur un étang privé coûte environ quatre fois moins.</p>
+    </div>
+    <div class="stack">
+      <h3>Notre choix</h3>
+      <p><strong>Le sauna flottant plutôt que le sauna miroir.</strong> Il coûte 20 à 30&nbsp;% de moins qu'un ensemble ÖÖD Medium installé, accueille 8 à 10 personnes au lieu de 3, et peut se vendre en séances et en privatisations en plus des nuits.</p>
+      <p class="muted">Son risque est administratif : statut du plan d'eau, autorisation d'urbanisme, accueil du public. Il n'existe pas de règle nationale claire. Il faut le traiter comme une deuxième phase, jamais comme une condition du projet.</p>
+    </div>
+  </div>
+</section>
+
+<section class="stack-lg" id="revenus">
+  <div class="stack">
+    <p class="eyebrow">Revenus</p>
+    <h2>Ce que rapporte une maison, selon trois hypothèses</h2>
+    <p>Ces chiffres sont des prévisions construites sur des repères de marché, pas des résultats observés. Le taux d'occupation est compté sur 365 jours.</p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Hypothèse</th><th class="r">Prix par nuit</th><th class="r">Occupation an 1</th><th class="r">Occupation an 3</th><th class="r">Recettes par maison, an 3</th></tr>
+    <tr><td>Prudente</td><td class="r">190&nbsp;€</td><td class="r">25&nbsp;%</td><td class="r">38&nbsp;%</td><td class="r">28&nbsp;k€</td></tr>
+    <tr><td><strong>Médiane</strong></td><td class="r">230&nbsp;€</td><td class="r">35&nbsp;%</td><td class="r">52&nbsp;%</td><td class="r"><strong>48&nbsp;k€</strong></td></tr>
+    <tr><td>Optimiste</td><td class="r">270&nbsp;€</td><td class="r">45&nbsp;%</td><td class="r">65&nbsp;%</td><td class="r">74&nbsp;k€</td></tr>
+  </table></div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Excédent d'exploitation en 3ᵉ année</th><th class="r">1 maison</th><th class="r">2 maisons</th><th class="r">4 maisons</th></tr>
+    <tr><td>Prudente</td><td class="r">−2&nbsp;k€</td><td class="r">9&nbsp;k€</td><td class="r">33&nbsp;k€</td></tr>
+    <tr><td><strong>Médiane</strong></td><td class="r">12&nbsp;k€</td><td class="r"><strong>39&nbsp;k€</strong></td><td class="r">93&nbsp;k€</td></tr>
+    <tr><td>Optimiste</td><td class="r">n.&nbsp;c.</td><td class="r">77&nbsp;k€</td><td class="r">173&nbsp;k€</td></tr>
+  </table></div>
+  <ul class="plain">
+    <li><strong>L'excédent n'est pas un salaire.</strong> Il reste à payer l'emprunt (environ 16&nbsp;k€ par an pour 100&nbsp;k€ empruntés sur 7 ans), le loyer du terrain et votre temps.</li>
+    <li><strong>Le nombre de maisons compte plus que le prix de la nuit.</strong> Les charges fixes du site, 14 à 18&nbsp;k€ par an, pèsent trop sur une ou deux maisons.</li>
+    <li><strong>ÖÖD annonce 315&nbsp;€ la nuit et 72&nbsp;% d'occupation en moyenne.</strong> Ce sont des chiffres commerciaux, sans contrôle indépendant. Les repères français sont plus bas : 42&nbsp;% d'occupation annuelle pour les gîtes labellisés d'Ardèche en 2025, et 265&nbsp;€ la nuit en moyenne pour un logement insolite (301&nbsp;€ en cabane).</li>
+    <li><strong>Trois leviers augmentent les recettes :</strong> les cartes cadeaux, les extras (apéritif, dîner, séance de sauna) et l'ouverture en hiver, quand le sauna devient l'argument.</li>
+  </ul>
+</section>
+
+<section class="stack-lg" id="regles">
+  <div class="stack">
+    <p class="eyebrow">Urbanisme</p>
+    <h2>Où l'on a le droit de poser une maison miroir</h2>
+    <p>Ces règles viennent du code de l'urbanisme, recoupées sur plusieurs sources mais pas relues sur le texte officiel. Faites-les valider par la mairie et par un professionnel avant tout achat.</p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Où</th><th>Démarche</th><th class="r">Délai avant ouverture</th><th>Risque de refus</th></tr>
+    <tr><td><strong>Dans un camping existant</strong> créé par permis d'aménager</td><td>Aucune formalité pour un module de 35&nbsp;m² au plus, dans la limite du quota du camping</td><td class="r">2 à 4 mois</td><td><span class="lvl-ok">Faible</span></td></tr>
+    <tr><td><strong>Terrain constructible</strong> en zone urbaine</td><td>Déclaration préalable jusqu'à 20&nbsp;m², permis de construire au-delà. Pour un permis déposé par une société, l'architecte est obligatoire</td><td class="r">6 à 10 mois</td><td><span class="lvl-ok">Faible à moyen</span></td></tr>
+    <tr><td>Parc d'un gîte ou d'un mas existant</td><td>Comme ci-dessus en zone urbaine ; très incertain en zone agricole ou naturelle</td><td class="r">4 à 8 mois</td><td><span class="lvl-warn">Selon la zone</span></td></tr>
+    <tr><td>Domaine viticole en zone agricole</td><td>Possible seulement dans un secteur dérogatoire du plan d'urbanisme (STECAL). S'il faut le créer, la commune doit modifier son plan</td><td class="r">3 à 6 mois, ou 18 à 36</td><td><span class="lvl-bad">Élevé</span> sans secteur existant</td></tr>
+    <tr><td>Création d'un petit camping</td><td>Permis d'aménager. La version allégée (6 emplacements, 20 personnes) n'autorise que des tentes, pas des maisons</td><td class="r">12 à 24 mois</td><td><span class="lvl-warn">Moyen à élevé</span></td></tr>
+    <tr><td>Bord de lac avec sauna flottant</td><td>L'urbanisme des maisons, plus le droit d'occuper le plan d'eau, la loi sur l'eau et la sécurité du public</td><td class="r">12 à 24 mois</td><td><span class="lvl-bad">Élevé</span></td></tr>
+  </table></div>
+  <ul class="plain">
+    <li><strong>Le seuil de 20&nbsp;m² tombe mal.</strong> La Signature fait 21,1&nbsp;m² : permis de construire hors camping. Une maison de 18&nbsp;m² reste en déclaration préalable, à condition que son emprise au sol, terrasse surélevée comprise, ne dépasse pas 20&nbsp;m².</li>
+    <li><strong>En montagne, une bande de 300&nbsp;m autour des plans d'eau de moins de 1&nbsp;000 hectares est inconstructible.</strong> C'est le piège d'un étang dans les Cévennes ou les Pyrénées.</li>
+    <li><strong>Un bain nordique ou un bain froid partagé entre clients est un bain collectif</strong> au sens du code de la santé publique : déclaration, traitement et contrôle de l'eau.</li>
+    <li><strong>Avant de signer quoi que ce soit, demandez un certificat d'urbanisme opérationnel.</strong> La mairie y écrit si le projet est réalisable sur la parcelle.</li>
+  </ul>
+</section>
+
+<section class="stack-lg" id="suite">
+  <div class="stack">
+    <p class="eyebrow">La suite</p>
+    <h2>Sept actions, dans cet ordre</h2>
+  </div>
+  <ol class="steps">
+    <li><strong>Écrire à ÖÖD</strong> via sa page partenariat en français : grille de prix datée, hors taxes ou non, option climatisation, fiche du vitrage, garantie, devis de transport vers l'Hérault, contrat type du partenariat.</li>
+    <li><strong>Aller voir les maisons miroir de Seignosse</strong> (Landes) pendant une période chaude, et interroger l'exploitant sur la chaleur, la climatisation et l'entretien des vitrages.</li>
+    <li><strong>Appeler les exploitants des saunas flottants de Brest et de Libourne</strong> : constructeur, assureur, démarches, fréquentation réelle.</li>
+    <li><strong>Lister 30 domaines viticoles et 10 campings haut de gamme avec plan d'eau</strong> autour du Pic Saint-Loup, d'Uzès et de la vallée de l'Hérault, et les contacter. Comptez 3 à 6 mois de prospection.</li>
+    <li><strong>Pour chaque site sérieux, demander le certificat d'urbanisme</strong> et la position écrite de la mairie avant toute commande.</li>
+    <li><strong>Chercher à la main sur Airbnb, Booking et Google Maps</strong> les maisons miroir et les saunas déjà ouverts dans l'Hérault, le Gard, le Vaucluse et le Var. C'est le contrôle que cette étude n'a pas pu faire.</li>
+    <li><strong>Demander trois devis de modules</strong> (ÖÖD, Lumipod, Copacabanon) et deux de saunas flottants, livrés et posés.</li>
+  </ol>
+</section>
+
+<footer>
+  <p><strong>Méthode et limites.</strong> Ce catalogue repose sur cinq recherches menées le 25 novembre 2026 (modules, saunas, terrains, réglementation, exploitants), soit environ 200 requêtes. Les prix ÖÖD ont été relus directement sur oodhouse.com. Les autres prix viennent d'extraits de moteur de recherche : une seconde vérification n'a pas pu les recouper, car les sites des fabricants étaient inaccessibles depuis la session. Ils doivent être confirmés par devis. Les budgets posés, les recettes et les excédents sont des estimations.</p>
+  <p><strong>Images.</strong> Les douze visuels sont générés par IA pour montrer l'ambiance visée. Aucun ne représente un produit, un fabricant ou un lieu réel.</p>
+  <p><strong>Sources principales.</strong> <a href="https://oodhouse.com/en/products/houses">ÖÖD, maisons</a> · <a href="https://oodhouse.com/en/products/saunas">ÖÖD, saunas</a> · <a href="https://oodhouse.com/en/partner-with-ood-french">ÖÖD, partenariat</a> · <a href="https://www.lumi-pod.com/">Lumipod</a> · <a href="https://www.mododomus.com/modo-one">MODODOMUS</a> · <a href="https://kodasema.com/en/koda-model-comparison/">Kodasema</a> · <a href="https://copacabanon.fr/lodges">Copacabanon</a> · <a href="https://villapoolnord.se/flottar/">Villapool Nord</a> · <a href="https://www.hagangssnickeri.se/produkter/bastuflotte/">Hagängs</a> · <a href="https://olderfjord.fr/">bateau-sauna de Brest</a>. Le détail et toutes les sources sont dans le dossier <code>etude/v2</code> du projet.</p>
+</footer>
+
+</div>
