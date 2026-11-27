@@ -1,0 +1,415 @@
+<title>Belvédère et Berge</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout : deux planches en miroir, une par modèle : images, composition chiffrée, règles, puis les terrains en ligne qui lui correspondent. */
+:root{
+  --bg:#eef1ee; --surface:#ffffff; --ink:#15211f; --muted:#56655f; --line:#cfd8d2;
+  --lake:#1d5a57; --lake-soft:#dcebe7; --ember:#b8651b; --ember-soft:#f6e6d2;
+  --ok:#2f7a4b; --warn:#a8640a; --bad:#a83a2a;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Instrument Sans","Helvetica Neue","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#101917; --surface:#18231f; --ink:#e8efeb; --muted:#9aaaa3; --line:#2c3a35;
+  --lake:#7cc4bd; --lake-soft:#1c312e; --ember:#e9a45c; --ember-soft:#33271a;
+  --ok:#6fc48d; --warn:#e2ab52; --bad:#e58a78; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#101917; --surface:#18231f; --ink:#e8efeb; --muted:#9aaaa3; --line:#2c3a35;
+  --lake:#7cc4bd; --lake-soft:#1c312e; --ember:#e9a45c; --ember-soft:#33271a;
+  --ok:#6fc48d; --warn:#e2ab52; --bad:#e58a78; color-scheme:dark }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
+h1{font-size:clamp(2.1rem,6vw,3.9rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.6vw,2.3rem);font-weight:700;letter-spacing:-.015em}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0;max-width:68ch}
+a{color:var(--lake)}
+a:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ember)}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+section{padding-block:3.2rem;border-top:1px solid var(--line)}
+.stack{display:flex;flex-direction:column;gap:1rem}
+.stack-lg{display:flex;flex-direction:column;gap:1.8rem}
+
+/* Ouverture */
+.hero{padding-block:1.2rem 0}
+.hero figure{margin:0;position:relative;border-radius:6px;overflow:hidden}
+.hero img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.hero-text{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem;padding-block:2rem 2.6rem;align-items:end}
+.hero-text > *{min-width:0}
+.lede{font-size:1.12rem}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+.facts div{padding:1rem 1rem 1rem 0;min-width:0}
+.facts b{display:block;font-family:var(--display);font-size:1.7rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.facts span{font-size:.88rem;color:var(--muted)}
+figcaption,.cap{font-size:.78rem;color:var(--muted);padding-top:.35rem}
+
+/* Verdict */
+.verdict{background:var(--lake-soft);border-left:4px solid var(--lake);padding:1.2rem 1.4rem;border-radius:0 6px 6px 0}
+.verdict p + p{margin-top:.6rem}
+
+/* Formules */
+.formule{display:grid;grid-template-columns:1fr 1.15fr;gap:1.8rem;align-items:start;padding-block:1.6rem;border-top:1px solid var(--line)}
+.formule:first-of-type{border-top:0;padding-top:0}
+.formule > *{min-width:0}
+.formule img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.price{font-family:var(--display);font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.tag{display:inline-block;align-self:flex-start;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .55rem;border-radius:3px;background:var(--ember-soft);color:var(--ember)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .7rem .5rem 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding-right:0}
+td.r:not(:last-child),th.r:not(:last-child){padding-right:1rem}
+tr.total td{border-top:2px solid var(--ink);border-bottom:0;font-weight:600}
+.src{font-size:.72rem;font-weight:600;padding:.08rem .35rem;border-radius:3px;white-space:nowrap}
+.src.v{background:var(--lake-soft);color:var(--lake)}
+.src.e{background:var(--ember-soft);color:var(--ember)}
+.src.n{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.kv div{min-width:0;border-top:1px solid var(--line);padding-top:.5rem}
+.kv b{display:block;font-family:var(--display);font-size:1.25rem;font-variant-numeric:tabular-nums}
+.kv span{font-size:.82rem;color:var(--muted)}
+
+/* Terrains */
+.terrains{display:grid;grid-template-columns:repeat(2,1fr);gap:1.8rem}
+.terrain{min-width:0;display:flex;flex-direction:column;gap:.55rem}
+.terrain img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.score{font-family:var(--display);font-variant-numeric:tabular-nums;font-weight:700}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:.2rem .9rem;font-size:.9rem;margin:0}
+.dl dt{color:var(--muted)} .dl dd{margin:0}
+.lvl-ok{color:var(--ok);font-weight:600}.lvl-warn{color:var(--warn);font-weight:600}.lvl-bad{color:var(--bad);font-weight:600}
+
+/* Barres de prix posé */
+.bars{display:grid;grid-template-columns:minmax(120px,210px) 1fr;gap:.55rem 1rem;align-items:center;font-size:.9rem}
+.bars .lbl{min-width:0}
+.track{position:relative;height:22px;background:linear-gradient(to right,var(--line) 1px,transparent 1px) 0 0/16.666% 100%;border-right:1px solid var(--line)}
+.bar{position:absolute;top:3px;bottom:3px;background:var(--lake);border-radius:2px}
+.bar.alt{background:var(--ember)}
+.bar.end span{left:auto;right:calc(100% + 6px)}
+.bar span{position:absolute;left:calc(100% + 6px);top:-2px;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--ink)}
+.axis{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:.35rem;vertical-align:-1px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem}
+.duo > *{min-width:0}
+.duo img,.trio img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.trio > *{min-width:0}
+ol.steps{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.7rem;max-width:70ch}
+ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem;max-width:70ch}
+footer{padding-block:2rem 3rem;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+footer p + p{margin-top:.5rem}
+
+@media (max-width:760px){
+  .hero-text,.formule,.terrains,.duo{grid-template-columns:1fr}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .kv,.trio{grid-template-columns:1fr}
+  .bars{grid-template-columns:1fr;gap:.15rem}
+  .bars .track{margin-bottom:.6rem;margin-right:5.5rem}
+}
+@media print{
+  section{break-inside:auto;padding-block:1.6rem}
+  .formule,.terrain,.duo,table,.verdict,.bars{break-inside:avoid}
+  h2,h3{break-after:avoid}
+  body{font-size:11.5pt}
+}
+
+.model-head{display:grid;grid-template-columns:1.2fr 1fr;gap:1.8rem;align-items:end}
+.model-head > *{min-width:0}
+.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;gap:1rem}
+.gallery > *{min-width:0}
+.gallery img{display:block;width:100%;height:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.status{font-size:.72rem;font-weight:600;padding:.08rem .35rem;border-radius:3px;white-space:nowrap}
+.status.on{background:var(--lake-soft);color:var(--lake)}
+.status.off{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.status.no{background:var(--ember-soft);color:var(--bad)}
+@media (max-width:760px){.model-head,.gallery{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <figure>
+    <img src="img/m1-montagne-lac.jpg" alt="Sur un replat d'alpage, une maison aux façades miroir et un petit sauna en bois dominent un grand lac de montagne.">
+  </figure>
+  <p class="cap">Visuel d'ambiance généré par IA. Ce n'est pas une photo de produit ni d'un lieu réel.</p>
+  <div class="hero-text">
+    <div class="stack">
+      <p class="eyebrow">Catalogue de projet · 27 novembre 2026</p>
+      <h1>Deux modèles&nbsp;: le belvédère et la berge</h1>
+    </div>
+    <p class="lede">Une maison vitrée avec sauna en montagne, face à un lac ou à une grande vue. La même au bord d'un étang, avec un sauna flottant. Pour chacune&nbsp;: ce qu'elle coûte, où on a le droit de la poser, et les terrains en vente aujourd'hui.</p>
+  </div>
+  <div class="facts">
+    <div><b>140&nbsp;000&nbsp;€</b><span>Terrain de 5&nbsp;600&nbsp;m² avec vue dans les Vosges, accord de principe de la mairie pour construire</span></div>
+    <div><b>127&nbsp;200&nbsp;€</b><span>Étang de 1,5&nbsp;hectare avec maisonnette près de Belfort, dont une parcelle peut-être constructible</span></div>
+    <div><b>≈&nbsp;300&nbsp;k€</b><span>Budget pour acheter l'un de ces terrains et y poser une maison et un sauna</span></div>
+    <div><b>18&nbsp;janvier</b><span>Date limite pour candidater à la reprise d'un camping municipal de Haute-Savoie</span></div>
+  </div>
+</header>
+
+<section class="stack-lg" id="verdict">
+  <div class="stack">
+    <p class="eyebrow">L'essentiel</p>
+    <h2>Les deux modèles sont faisables, mais pas sur n'importe quel terrain</h2>
+  </div>
+  <div class="verdict">
+    <p><strong>En montagne, il faut un terrain à bâtir dans un village, pas un bord de lac.</strong> La loi interdit de construire à moins de 300&nbsp;m des rives des lacs de montagne de moins de 1&nbsp;000&nbsp;hectares. Le modèle réaliste est donc une vue dominante sur le lac ou la vallée, avec un sauna à terre.</p>
+    <p><strong>Au bord d'un étang, presque tous les terrains en vente sont inconstructibles.</strong> Seuls conviennent ceux qui ont une partie constructible, un bâtiment existant ou une activité d'accueil déjà autorisée.</p>
+    <p><strong>Acheter le terrain consomme la moitié du budget.</strong> Avec 300&nbsp;k€, on achète un terrain et on y pose une maison et un sauna. Sans achat, chez une commune ou un partenaire, on en pose deux.</p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th>Le Belvédère · montagne</th><th>La Berge · étang</th></tr>
+    <tr><td><strong>Ce qu'on voit</strong></td><td>Maison miroir en balcon sur un lac ou une vallée, sauna vitré à côté</td><td>Maison miroir sur la rive, sauna flottant au bout d'un ponton</td></tr>
+    <tr><td><strong>Sauna</strong></td><td>À terre, avec baie panoramique, bain froid et bain nordique</td><td>Flottant, amarré sans moteur, 8 à 10 places. L'étang sert de bain froid</td></tr>
+    <tr><td><strong>Budget avec achat du terrain</strong></td><td class="num">≈ 300 à 317&nbsp;k€ pour 1 maison</td><td class="num">≈ 294 à 325&nbsp;k€ pour 1 maison</td></tr>
+    <tr><td><strong>Budget sans achat</strong></td><td class="num">≈ 261 à 281&nbsp;k€ pour 2 maisons</td><td class="num">≈ 269 à 303&nbsp;k€ pour 2 maisons</td></tr>
+    <tr><td><strong>Saison forte</strong></td><td>Hiver et été</td><td>Printemps à automne ; l'hiver grâce au sauna</td></tr>
+    <tr><td><strong>Verrou principal</strong></td><td>Trouver un terrain à bâtir avec vue ; permis de construire</td><td>Trouver un étang où construire est permis ; statut du sauna flottant</td></tr>
+  </table></div>
+  <p class="muted">Dans les tableaux de budget : <span class="src v">vérifié</span> ou <span class="src v">annonce</span> = relu à la source. <span class="src n">relevé</span> = prix trouvé en ligne, pas encore recoupé. <span class="src e">estimation</span> = ordre de grandeur à remplacer par un devis. Montants hors taxes pour les équipements.</p>
+</section>
+
+<section class="stack-lg" id="belvedere">
+  <div class="model-head">
+    <div class="stack">
+      <p class="eyebrow">Modèle 1</p>
+      <h2>Le Belvédère&nbsp;: maison miroir et sauna en montagne</h2>
+    </div>
+    <p>Une à deux maisons vitrées posées en gradin sur une prairie en pente, à la sortie d'un village. Chaque lit regarde le lac ou la vallée. Un sauna à baie panoramique, un bain froid et un bain nordique servent de point de rencontre.</p>
+  </div>
+  <div class="gallery">
+    <div class="stack"><img src="img/m2-hiver.jpg" alt="En hiver, maison miroir éclairée dans la neige, sauna fumant et bain nordique devant un lac gelé."><p class="cap">En hiver. Visuel IA.</p></div>
+    <div class="stack"><img src="img/m3-sauna-vue.jpg" alt="Intérieur d'un sauna en bois dont la baie donne sur un lac de montagne turquoise."><p class="cap">Depuis les bancs du sauna. Visuel IA.</p></div>
+    <div class="stack"><img src="img/m4-plan.jpg" alt="Vue aérienne : trois maisons miroir étagées dans une prairie au-dessus d'un lac, un sauna au centre."><p class="cap">Implantation en gradin. Visuel IA.</p></div>
+  </div>
+
+  <div class="duo">
+    <div class="stack">
+      <h3>Avec achat du terrain</h3>
+      <p class="muted">Exemple chiffré sur le terrain de Cornimont (Vosges).</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Poste</th><th>Source</th><th class="r">Budget</th></tr>
+        <tr><td>Terrain à bâtir de 5&nbsp;600&nbsp;m² avec vue</td><td><span class="src v">annonce</span></td><td class="r">140&nbsp;k€</td></tr>
+        <tr><td>Frais de notaire</td><td><span class="src e">estimation</span></td><td class="r">11&nbsp;k€</td></tr>
+        <tr><td>1 ÖÖD Signature, 21&nbsp;m²</td><td><span class="src v">vérifié</span></td><td class="r">84,9&nbsp;k€</td></tr>
+        <tr><td>Transport, grue, fondations, raccordements, terrasse, climatisation</td><td><span class="src e">estimation</span></td><td class="r">25 à 35&nbsp;k€</td></tr>
+        <tr><td>Sauna panoramique, bain froid, bain nordique, douche</td><td><span class="src n">relevé</span></td><td class="r">31&nbsp;k€</td></tr>
+        <tr><td>Architecte, permis, taxe d'aménagement</td><td><span class="src e">estimation</span></td><td class="r">8 à 15&nbsp;k€</td></tr>
+        <tr class="total"><td>Total</td><td></td><td class="r">≈ 300 à 317&nbsp;k€</td></tr>
+      </table></div>
+      <p class="muted">Le terrain est assez grand pour ajouter deux ou trois maisons plus tard. Le budget dépasse légèrement 300&nbsp;k€&nbsp;: il faut négocier le terrain ou choisir un module moins cher.</p>
+    </div>
+    <div class="stack">
+      <h3>Sans achat du terrain</h3>
+      <p class="muted">Dans un camping municipal repris en gérance, ou chez un hôtel ou un domaine de montagne.</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Poste</th><th>Source</th><th class="r">Budget</th></tr>
+        <tr><td>2 ÖÖD Signature (2 × 84&nbsp;900&nbsp;€)</td><td><span class="src v">vérifié</span></td><td class="r">169,8&nbsp;k€</td></tr>
+        <tr><td>Transport, grue, fondations, raccordements, terrasses</td><td><span class="src e">estimation</span></td><td class="r">50 à 70&nbsp;k€</td></tr>
+        <tr><td>Sauna panoramique, bain froid, bain nordique, douche</td><td><span class="src n">relevé</span></td><td class="r">31&nbsp;k€</td></tr>
+        <tr><td>Chemins, éclairage</td><td><span class="src e">estimation</span></td><td class="r">10&nbsp;k€</td></tr>
+        <tr class="total"><td>Total</td><td></td><td class="r">≈ 261 à 281&nbsp;k€</td></tr>
+      </table></div>
+      <p class="muted">S'ajoute une redevance ou un loyer annuel, à négocier. Dans un camping créé par permis d'aménager, une maison de 35&nbsp;m² au plus se pose sans autorisation.</p>
+    </div>
+  </div>
+
+  <div class="stack">
+    <h3>Ce qu'il faut pour avoir le droit de l'installer</h3>
+    <ul class="plain">
+      <li><strong>Un terrain en zone constructible, dans la continuité d'un village.</strong> En montagne, on ne construit pas en site isolé.</li>
+      <li><strong>Plus de 300&nbsp;m entre les maisons et la rive</strong> si le lac fait moins de 1&nbsp;000&nbsp;hectares. Les grands lacs (Annecy, Léman, Bourget, Serre-Ponçon) relèvent en plus de la loi Littoral.</li>
+      <li><strong>Un permis de construire</strong>, car la Signature dépasse 20&nbsp;m², avec un architecte si c'est une société qui dépose.</li>
+      <li><strong>Un plan d'urbanisme qui accepte l'hébergement touristique</strong> sur la parcelle. C'est la question à poser à la mairie avant toute offre.</li>
+      <li><strong>Une route où passent un semi-remorque et une grue</strong>, y compris en hiver. La maison pèse 10&nbsp;tonnes et arrive en un seul bloc.</li>
+    </ul>
+  </div>
+
+  <div class="stack">
+    <h3>Terrains de montagne en vente</h3>
+    <p class="muted"><span class="status on">en ligne</span> = annonce relue le 27 novembre 2026. <span class="status off">non contrôlé</span> = trouvée par moteur de recherche, page non ouverte.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>Lieu</th><th class="r">Surface</th><th class="r">Prix</th><th>Ce que dit l'annonce</th><th>État</th></tr>
+      <tr><td><strong>Cornimont (Vosges)</strong>, près de La Bresse</td><td class="r">5&nbsp;600&nbsp;m²</td><td class="r">140&nbsp;000&nbsp;€</td><td>Terrain à bâtir en prairie, vue panoramique sur la montagne et les forêts, exposé sud-ouest. Certificat d'urbanisme opérationnel reçu avec avis favorable. Référence Capifrance 979675</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td><strong>Aiguebelette-le-Lac (Savoie)</strong></td><td class="r">3&nbsp;531&nbsp;m²</td><td class="r">170&nbsp;000&nbsp;€</td><td>Coteau ensoleillé avec forêt, viabilisé. Seul un lot de 1&nbsp;121&nbsp;m² est constructible, dans un lotissement. Vue dominante sur le village</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Saint-Alban-de-Montbel (Savoie), au bout du lac d'Aiguebelette</td><td class="r">793&nbsp;m²</td><td class="r">109&nbsp;000&nbsp;€</td><td>Plat, réseaux en bordure. Trop petit pour plus d'une maison</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Saint-Amé (Vosges)</td><td class="r">2&nbsp;190&nbsp;m²</td><td class="r">115&nbsp;000&nbsp;€</td><td>Terrain à bâtir au cœur du village, exposé sud. Vue non précisée</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Vagney (Vosges), à 20&nbsp;min de Gérardmer</td><td class="r">2&nbsp;462&nbsp;m²</td><td class="r">160&nbsp;000&nbsp;€</td><td>Plat, en zone constructible, réseaux à amener</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Xonrupt-Longemer (Vosges)</td><td class="r">1&nbsp;200&nbsp;m²</td><td class="r">159&nbsp;000&nbsp;€</td><td>Vendu avec un permis de construire purgé de recours, pour une maison déjà dessinée</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Charancieu (Isère), près du lac de Paladru</td><td class="r">2&nbsp;738&nbsp;m²</td><td class="r">115&nbsp;000&nbsp;€</td><td>Avec vue, eau sur place, assainissement individuel</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Savines-le-Lac (Hautes-Alpes), Serre-Ponçon</td><td class="r">427&nbsp;m²</td><td class="r">120&nbsp;000&nbsp;€</td><td>Petit terrain. Les lots face au lac sont entre 212&nbsp;000 et 280&nbsp;000&nbsp;€</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Luttenbach-près-Munster (Haut-Rhin)</td><td class="r">1&nbsp;147&nbsp;m²</td><td class="r">108&nbsp;000&nbsp;€</td><td>« Vue imprenable sur les montagnes », plateforme déjà faite</td><td><span class="status off">non contrôlé</span></td></tr>
+      <tr><td>Cadéac (Hautes-Pyrénées), vallée d'Aure</td><td class="r">2&nbsp;000&nbsp;m²</td><td class="r">119&nbsp;000&nbsp;€</td><td>Vue panoramique</td><td><span class="status off">non contrôlé</span></td></tr>
+    </table></div>
+    <p class="muted">Annonces en ligne lues sur lesiteimmo.com, pages de <a href="https://www.lesiteimmo.com/acheter/terrain/gerardmer-88400">Gérardmer</a>, d'<a href="https://www.lesiteimmo.com/acheter/terrain/aiguebelette-le-lac-73610">Aiguebelette-le-Lac</a>, des <a href="https://www.lesiteimmo.com/acheter/terrain/villages-du-lac-de-paladru-38850">Villages du Lac de Paladru</a> et de <a href="https://www.lesiteimmo.com/acheter/terrain/savines-le-lac-05160">Savines-le-Lac</a>.</p>
+  </div>
+
+  <div class="verdict">
+    <p><strong>Notre choix en montagne&nbsp;: Cornimont.</strong> C'est le seul terrain qui réunit la taille, la vue et un accord écrit de la mairie. Les Hautes-Vosges reçoivent une clientèle d'Alsace, de Lorraine, du Luxembourg, de Suisse et d'Allemagne, en hiver comme en été. Il n'a pas de lac&nbsp;: la vue lac, dans les Vosges, coûte plus de 220&nbsp;k€.</p>
+    <p>À vérifier avant toute offre&nbsp;: que le certificat d'urbanisme couvre un hébergement touristique et pas seulement une maison d'habitation.</p>
+  </div>
+</section>
+
+<section class="stack-lg" id="berge">
+  <div class="model-head">
+    <div class="stack">
+      <p class="eyebrow">Modèle 2</p>
+      <h2>La Berge&nbsp;: maison miroir et sauna flottant au bord d'un étang</h2>
+    </div>
+    <p>Une à deux maisons vitrées sur la rive d'un étang privé, chacune avec son ponton. Au milieu, un sauna flottant relié par une passerelle&nbsp;: on en sort par l'échelle, directement dans l'eau.</p>
+  </div>
+  <div class="gallery">
+    <div class="stack"><img src="img/e1-etang.jpg" alt="Matin de brume en forêt : maison miroir sur la rive d'un étang, sauna flottant au bout d'un ponton, barque amarrée."><p class="cap">Le modèle au petit matin. Visuel IA.</p></div>
+    <div class="stack"><img src="img/e2-depuis-sauna.jpg" alt="Depuis le pont du sauna flottant, deux maisons miroir éclairées sur la rive."><p class="cap">Depuis le sauna. Visuel IA.</p></div>
+    <div class="stack"><img src="img/e3-plan.jpg" alt="Vue aérienne : trois maisons miroir sur la berge d'un étang, sauna flottant, petite maison de pêcheur en pierre."><p class="cap">Implantation autour de l'eau. Visuel IA.</p></div>
+  </div>
+
+  <div class="duo">
+    <div class="stack">
+      <h3>Avec achat du terrain</h3>
+      <p class="muted">Exemple chiffré sur l'étang de Valdoie (Territoire de Belfort).</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Poste</th><th>Source</th><th class="r">Budget</th></tr>
+        <tr><td>Étang de 1,5&nbsp;hectare, maisonnette, garage, 2,5&nbsp;hectares en tout</td><td><span class="src v">annonce</span></td><td class="r">127,2&nbsp;k€</td></tr>
+        <tr><td>Frais de notaire</td><td><span class="src e">estimation</span></td><td class="r">10&nbsp;k€</td></tr>
+        <tr><td>1 ÖÖD Signature, 21&nbsp;m²</td><td><span class="src v">vérifié</span></td><td class="r">84,9&nbsp;k€</td></tr>
+        <tr><td>Transport, grue, fondations, raccordements, terrasse, climatisation</td><td><span class="src e">estimation</span></td><td class="r">25 à 35&nbsp;k€</td></tr>
+        <tr><td>Sauna flottant 8–10 places</td><td><span class="src n">relevé</span></td><td class="r">19 à 21&nbsp;k€</td></tr>
+        <tr><td>Transport, mise à l'eau, ancrage, ponton, dossier</td><td><span class="src e">estimation</span></td><td class="r">20 à 32&nbsp;k€</td></tr>
+        <tr><td>Architecte, permis, taxe d'aménagement</td><td><span class="src e">estimation</span></td><td class="r">8 à 15&nbsp;k€</td></tr>
+        <tr class="total"><td>Total</td><td></td><td class="r">≈ 294 à 325&nbsp;k€</td></tr>
+      </table></div>
+      <p class="muted">Hors rénovation de la maisonnette, que l'annonce dit à reprendre. Elle peut servir d'accueil.</p>
+    </div>
+    <div class="stack">
+      <h3>Sans achat du terrain</h3>
+      <p class="muted">Dans un camping au bord d'un lac repris en gérance, ou chez un domaine qui a un étang.</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Poste</th><th>Source</th><th class="r">Budget</th></tr>
+        <tr><td>2 ÖÖD Signature (2 × 84&nbsp;900&nbsp;€)</td><td><span class="src v">vérifié</span></td><td class="r">169,8&nbsp;k€</td></tr>
+        <tr><td>Transport, grue, fondations, raccordements, terrasses</td><td><span class="src e">estimation</span></td><td class="r">50 à 70&nbsp;k€</td></tr>
+        <tr><td>Sauna flottant installé, avec ponton</td><td><span class="src e">estimation</span></td><td class="r">39 à 53&nbsp;k€</td></tr>
+        <tr><td>Chemins, éclairage</td><td><span class="src e">estimation</span></td><td class="r">10&nbsp;k€</td></tr>
+        <tr class="total"><td>Total</td><td></td><td class="r">≈ 269 à 303&nbsp;k€</td></tr>
+      </table></div>
+      <p class="muted">S'ajoute une redevance ou un loyer annuel. Sur un lac public, l'autorisation d'occuper l'eau est précaire&nbsp;: elle convient au sauna, pas à un investissement lourd.</p>
+    </div>
+  </div>
+
+  <div class="duo">
+    <div class="stack">
+      <img src="img/e4-interieur.jpg" alt="Intérieur d'une maison vitrée : lit face à un étang dans la brume, ponton en bois.">
+      <p class="cap">Le réveil visé. Visuel IA.</p>
+    </div>
+    <div class="stack">
+      <h3>Ce qu'il faut pour avoir le droit de l'installer</h3>
+      <ul class="plain">
+        <li><strong>Une partie du terrain en zone constructible</strong>, ou un bâtiment existant, ou un camping déjà autorisé. Un étang en zone naturelle n'accepte aucune maison.</li>
+        <li><strong>Un terrain hors zone inondable</strong>, ce qui est rare au bord de l'eau. À contrôler sur Géorisques avant de visiter.</li>
+        <li><strong>Un étang privé et clos</strong> pour le sauna flottant&nbsp;: c'est le cas le plus simple. Il n'existe pas de règle nationale claire, la mairie et la préfecture tranchent.</li>
+        <li><strong>Hors montagne</strong>, pour échapper à la bande de 300&nbsp;m.</li>
+        <li><strong>Une déclaration à l'agence régionale de santé</strong> si un bain est partagé entre clients.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="stack">
+    <h3>Étangs et bords de lac en vente ou à reprendre</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Lieu</th><th class="r">Surface</th><th class="r">Prix</th><th>Ce que dit l'annonce</th><th>État</th></tr>
+      <tr><td><strong>Valdoie (Territoire de Belfort)</strong>, aux portes de Belfort</td><td class="r">2,5&nbsp;ha, dont 1,5&nbsp;ha d'étang</td><td class="r">127&nbsp;200&nbsp;€</td><td>Étang, carpière de 25&nbsp;ares, maisonnette avec une chambre et garage, à rénover. Parcelle de 865&nbsp;m² au « potentiel constructible, sous réserve des prescriptions administratives »</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Angeot (Territoire de Belfort), à 35&nbsp;min de Mulhouse</td><td class="r">1&nbsp;008&nbsp;m²</td><td class="r">78&nbsp;000&nbsp;€</td><td>Terrain constructible avec vue dégagée sur un étang. L'étang n'est pas vendu avec</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Selles-sur-Cher (Loir-et-Cher), à 2&nbsp;h de Paris</td><td class="r">2,6&nbsp;ha, dont 6&nbsp;000&nbsp;m² d'étang</td><td class="r">249&nbsp;900&nbsp;€</td><td>Maison de 135&nbsp;m², étang, bois, terrain clos, forage. Le prix prend tout le budget</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Saint-James (Manche), près du Mont-Saint-Michel</td><td class="r">2&nbsp;ha, deux étangs</td><td class="r">399&nbsp;000&nbsp;€</td><td>Chalet de 67&nbsp;m² loué jusqu'à 1&nbsp;500&nbsp;€ la semaine à des pêcheurs britanniques. Activité vendue avec. Hors budget</td><td><span class="status on">en ligne</span></td></tr>
+      <tr><td>Le Frasnois (Jura), camping municipal du lac de Narlay</td><td class="r">n.&nbsp;c.</td><td class="r">Redevance n.&nbsp;c.</td><td>Autorisation d'exploiter le camping. Dossier à remettre avant le 15 décembre 2026 à 12&nbsp;h</td><td><span class="status off">non contrôlé</span></td></tr>
+      <tr><td>Thénioux (Cher)</td><td class="r">4&nbsp;322&nbsp;m²</td><td class="r">33&nbsp;990&nbsp;€</td><td>Terrain constructible avec étang, en zone urbaine, certificat d'urbanisme en cours</td><td><span class="status off">non contrôlé</span></td></tr>
+      <tr><td>Romorantin (Loir-et-Cher)</td><td class="r">1,08&nbsp;ha d'étang</td><td class="r">71&nbsp;500&nbsp;€</td><td>Étang « en partie constructible »</td><td><span class="status off">non contrôlé</span></td></tr>
+      <tr><td>Altenach (Haut-Rhin)</td><td class="r">4&nbsp;269&nbsp;m²</td><td class="r">88&nbsp;000&nbsp;€</td><td>Étang avec chalet. Zone protégée probable</td><td><span class="status off">non contrôlé</span></td></tr>
+      <tr><td>Oise, à 75&nbsp;km de Paris</td><td class="r">5&nbsp;ha</td><td class="r">n.&nbsp;c.</td><td>Terrain « pour projet d'hébergement insolite », relayé par l'agence de tourisme de l'Oise</td><td><span class="status off">non contrôlé</span></td></tr>
+    </table></div>
+    <p class="muted">Annonces en ligne lues sur lesiteimmo.com (<a href="https://www.lesiteimmo.com/acheter/terrain/valdoie-90300">Valdoie</a>, <a href="https://www.lesiteimmo.com/acheter/terrain/bourg-sous-chatelet-90110">Angeot</a>) et ma-propriete.fr (<a href="https://www.ma-propriete.fr/fr/forestiere/etangs/loir-et-cher/propriete-a-vendre-7-pieces-selles-sur-cher-41-1">Selles-sur-Cher</a>, <a href="https://www.ma-propriete.fr/fr/forestiere/etangs/manche/domaine-de-peche-prive-avec-chalet-et-activite-touristique-saint-james">Saint-James</a>).</p>
+  </div>
+
+  <div class="stack">
+    <h3>Les pièges, vérifiés dans le texte des annonces</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Annonce</th><th class="r">Prix</th><th>Pourquoi ce n'est pas faisable</th></tr>
+      <tr><td><a href="https://www.ma-propriete.fr/fr/rurale/terrains-de-loisirs/haute-savoie/lac-prive-a-vendre-taninges-74">Lac privé à Taninges (Haute-Savoie)</a>, 1,1&nbsp;ha avec île et chalet de 13&nbsp;m²</td><td class="r">78&nbsp;000&nbsp;€</td><td><span class="status no">maisons exclues</span> L'annonce l'écrit&nbsp;: aucune construction nouvelle ni agrandissement. Seule une « petite activité commerciale légère » est envisageable avec la mairie, ce qui pourrait concerner un sauna flottant seul</td></tr>
+      <tr><td>Domaine de 9,6&nbsp;ha avec trois plans d'eau à La Ferté-sous-Jouarre (Seine-et-Marne)</td><td class="r">118&nbsp;500&nbsp;€</td><td><span class="status no">très contraint</span> Ancienne carrière classée, à une heure de Paris</td></tr>
+      <tr><td>Étangs avec chalet de 15 à 20&nbsp;m² dans le Perche, la Sarthe, près de Rennes</td><td class="r">43&nbsp;000 à 89&nbsp;000&nbsp;€</td><td><span class="status no">terrains de loisirs</span> Vendus comme terrains de loisirs&nbsp;: rien n'indique qu'on puisse y construire</td></tr>
+      <tr><td>Étang de 6&nbsp;000&nbsp;m² en Haute-Vienne</td><td class="r">35&nbsp;000&nbsp;€</td><td><span class="status no">zone protégée</span> « Zone classée et protégée » selon l'annonce</td></tr>
+    </table></div>
+  </div>
+
+  <div class="verdict">
+    <p><strong>Notre choix au bord de l'eau&nbsp;: Valdoie, sous condition.</strong> C'est le seul bien en ligne qui réunit un vrai étang, un bâtiment existant et une parcelle annoncée comme potentiellement constructible, pour moins de 130&nbsp;k€. Belfort est à la porte, Mulhouse et Bâle à environ une heure de route.</p>
+    <p>Tout repose sur les 865&nbsp;m² constructibles&nbsp;: sans confirmation écrite de la mairie, le terrain ne vaut rien pour ce projet.</p>
+  </div>
+</section>
+
+<section class="stack-lg" id="public">
+  <div class="stack">
+    <p class="eyebrow">Sans acheter</p>
+    <h2>Deux campings municipaux à reprendre, au bord d'un lac</h2>
+    <p>Reprendre un camping communal évite l'achat du terrain et règle l'urbanisme&nbsp;: les maisons s'y posent sans permis si le camping a été créé par permis d'aménager. Ces deux consultations viennent d'extraits de moteur de recherche&nbsp;; les dates sont à contrôler sur l'avis officiel.</p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Date limite</th><th>Lieu</th><th>Objet</th><th>Ce qui manque</th></tr>
+    <tr><td class="num"><strong>15 décembre 2026</strong>, 12&nbsp;h</td><td>Le Frasnois (Jura), lac de Narlay</td><td>Exploitation du camping municipal « Sur Narlay »</td><td>Durée et redevance</td></tr>
+    <tr><td class="num"><strong>18 janvier 2027</strong></td><td>Verchaix (Haute-Savoie), vallée du Giffre</td><td>Exploitation et modernisation du camping municipal « Lac et Montagnes »</td><td>Type de contrat et durée</td></tr>
+  </table></div>
+  <ul class="plain">
+    <li><strong>Verchaix réunit les deux modèles</strong>&nbsp;: montagne et lac, dans une vallée touristique de Haute-Savoie.</li>
+    <li><strong>Aucun appel à projets en France ne porte sur des maisons insolites avec sauna au bord d'un lac.</strong> La voie réaliste est d'écrire soi-même à une commune. Cinq lacs où cela aurait du sens&nbsp;: Passy (Haute-Savoie), Paladru (Isère), Aiguebelette (Savoie), Serre-Ponçon (Hautes-Alpes) et Lamoura (Jura).</li>
+    <li><strong>Deux précédents à citer</strong>&nbsp;: des saunas installés sur la plage municipale d'Amphion, à Publier, et un sauna mobile aux Lacs aux Dames, à Samoëns, en Haute-Savoie.</li>
+  </ul>
+</section>
+
+<section class="stack-lg" id="revenus">
+  <div class="stack">
+    <p class="eyebrow">Revenus</p>
+    <h2>Une maison ne suffit pas, deux commencent à payer</h2>
+    <p>Prévisions en 3ᵉ année, avec l'hypothèse médiane de l'étude&nbsp;: 230&nbsp;€ la nuit et 52&nbsp;% d'occupation sur l'année. Ce ne sont pas des résultats observés.</p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th></th><th class="r">Recettes par an</th><th class="r">Excédent, hypothèse médiane</th><th class="r">Excédent, hypothèse prudente</th></tr>
+    <tr><td>1 maison (montage avec achat du terrain)</td><td class="r">48&nbsp;k€</td><td class="r">+12&nbsp;k€</td><td class="r">−2&nbsp;k€</td></tr>
+    <tr><td>2 maisons (montage sans achat)</td><td class="r">97&nbsp;k€</td><td class="r">+39&nbsp;k€</td><td class="r">+9&nbsp;k€</td></tr>
+    <tr><td>Sauna flottant ouvert aux clients extérieurs</td><td class="r">17 à 27&nbsp;k€</td><td class="r">n.&nbsp;c.</td><td class="r">n.&nbsp;c.</td></tr>
+  </table></div>
+  <ul class="plain">
+    <li><strong>L'excédent est calculé avant emprunt, loyer du terrain et salaires.</strong></li>
+    <li><strong>Acheter le terrain donne un actif mais une seule maison au départ</strong>&nbsp;: l'exploitation ne s'équilibre qu'en ajoutant des maisons les années suivantes.</li>
+    <li><strong>En montagne, les prix de nuit relevés sont plus hauts</strong>&nbsp;: 180 à 370&nbsp;€ pour des logements avec spa dans les Vosges. Ces relevés ne sont pas recoupés.</li>
+  </ul>
+</section>
+
+<section class="stack-lg" id="suite">
+  <div class="stack">
+    <p class="eyebrow">La suite</p>
+    <h2>Cinq actions, dans cet ordre</h2>
+  </div>
+  <ol class="steps">
+    <li><strong>Demander le dossier de Verchaix et celui du Frasnois</strong> aux deux mairies, dès maintenant&nbsp;: le Frasnois ferme le 15 décembre.</li>
+    <li><strong>Appeler l'agent du terrain de Cornimont</strong> (référence Capifrance 979675) et demander le certificat d'urbanisme&nbsp;: quel projet couvre-t-il&nbsp;?</li>
+    <li><strong>Appeler l'agence de l'étang de Valdoie</strong> et la mairie&nbsp;: la parcelle de 865&nbsp;m² est-elle constructible, et pour de l'hébergement touristique&nbsp;?</li>
+    <li><strong>Écrire à ÖÖD</strong> pour la grille de prix datée, l'option climatisation, la tenue à la neige et le devis de transport vers les Vosges et le Territoire de Belfort.</li>
+    <li><strong>Envoyer une candidature spontanée à deux communes de lac</strong>, en citant les précédents de Publier et de Samoëns.</li>
+  </ol>
+</section>
+
+<footer>
+  <p><strong>Méthode et limites.</strong> Trois recherches menées le 27 novembre 2026 (montagne, étangs, appels à projets) ont trouvé les annonces par moteur de recherche. J'ai ensuite relu moi-même les annonces sur les sites qui s'ouvrent depuis la session&nbsp;: lesiteimmo.com, ma-propriete.fr, gestion-camping.com et gravitao.com. Celles marquées « en ligne » en viennent. Les autres sites refusent les lectures automatiques&nbsp;: leurs annonces restent à ouvrir à la main.</p>
+  <p><strong>Ce que les annonces ne disent pas.</strong> Aucune ne garantit qu'un hébergement touristique est autorisé. Le zonage, le risque d'inondation et les protections naturelles ne sont contrôlés pour aucun terrain. Les règles d'urbanisme citées ont été recoupées sur plusieurs sources, pas relues sur les textes officiels.</p>
+  <p><strong>Prix.</strong> Les prix ÖÖD ont été relus sur oodhouse.com le 25 novembre 2026. Les prix des saunas et des bains sont des relevés non recoupés. Les budgets posés, les recettes et les excédents sont des estimations.</p>
+  <p><strong>Images.</strong> Les huit visuels sont générés par IA. Aucun ne représente un produit, un terrain ou un lieu réel. Le détail des recherches est dans le dossier <code>etude/v4</code> du projet.</p>
+</footer>
+
+</div>
