@@ -1,0 +1,377 @@
+<title>Plan 30 000 €</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout : un plan qui se lit de haut en bas : la réponse, quatre variantes chiffrées côte à côte, le compte de la variante retenue, puis le calendrier 2027. */
+:root{
+  --bg:#eef1ee; --surface:#ffffff; --ink:#15211f; --muted:#56655f; --line:#cfd8d2;
+  --lake:#1d5a57; --lake-soft:#dcebe7; --ember:#b8651b; --ember-soft:#f6e6d2;
+  --ok:#2f7a4b; --warn:#a8640a; --bad:#a83a2a;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --body:"Instrument Sans","Helvetica Neue","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#101917; --surface:#18231f; --ink:#e8efeb; --muted:#9aaaa3; --line:#2c3a35;
+  --lake:#7cc4bd; --lake-soft:#1c312e; --ember:#e9a45c; --ember-soft:#33271a;
+  --ok:#6fc48d; --warn:#e2ab52; --bad:#e58a78; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#101917; --surface:#18231f; --ink:#e8efeb; --muted:#9aaaa3; --line:#2c3a35;
+  --lake:#7cc4bd; --lake-soft:#1c312e; --ember:#e9a45c; --ember-soft:#33271a;
+  --ok:#6fc48d; --warn:#e2ab52; --bad:#e58a78; color-scheme:dark }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
+h1{font-size:clamp(2.1rem,6vw,3.9rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.6vw,2.3rem);font-weight:700;letter-spacing:-.015em}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0;max-width:68ch}
+a{color:var(--lake)}
+a:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ember)}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+section{padding-block:3.2rem;border-top:1px solid var(--line)}
+.stack{display:flex;flex-direction:column;gap:1rem}
+.stack-lg{display:flex;flex-direction:column;gap:1.8rem}
+
+/* Ouverture */
+.hero{padding-block:1.2rem 0}
+.hero figure{margin:0;position:relative;border-radius:6px;overflow:hidden}
+.hero img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.hero-text{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem;padding-block:2rem 2.6rem;align-items:end}
+.hero-text > *{min-width:0}
+.lede{font-size:1.12rem}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+.facts div{padding:1rem 1rem 1rem 0;min-width:0}
+.facts b{display:block;font-family:var(--display);font-size:1.7rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.facts span{font-size:.88rem;color:var(--muted)}
+figcaption,.cap{font-size:.78rem;color:var(--muted);padding-top:.35rem}
+
+/* Verdict */
+.verdict{background:var(--lake-soft);border-left:4px solid var(--lake);padding:1.2rem 1.4rem;border-radius:0 6px 6px 0}
+.verdict p + p{margin-top:.6rem}
+
+/* Formules */
+.formule{display:grid;grid-template-columns:1fr 1.15fr;gap:1.8rem;align-items:start;padding-block:1.6rem;border-top:1px solid var(--line)}
+.formule:first-of-type{border-top:0;padding-top:0}
+.formule > *{min-width:0}
+.formule img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.price{font-family:var(--display);font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.tag{display:inline-block;align-self:flex-start;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .55rem;border-radius:3px;background:var(--ember-soft);color:var(--ember)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:.5rem .7rem .5rem 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding-right:0}
+td.r:not(:last-child),th.r:not(:last-child){padding-right:1rem}
+tr.total td{border-top:2px solid var(--ink);border-bottom:0;font-weight:600}
+.src{font-size:.72rem;font-weight:600;padding:.08rem .35rem;border-radius:3px;white-space:nowrap}
+.src.v{background:var(--lake-soft);color:var(--lake)}
+.src.e{background:var(--ember-soft);color:var(--ember)}
+.src.n{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.kv div{min-width:0;border-top:1px solid var(--line);padding-top:.5rem}
+.kv b{display:block;font-family:var(--display);font-size:1.25rem;font-variant-numeric:tabular-nums}
+.kv span{font-size:.82rem;color:var(--muted)}
+
+/* Terrains */
+.terrains{display:grid;grid-template-columns:repeat(2,1fr);gap:1.8rem}
+.terrain{min-width:0;display:flex;flex-direction:column;gap:.55rem}
+.terrain img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.score{font-family:var(--display);font-variant-numeric:tabular-nums;font-weight:700}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:.2rem .9rem;font-size:.9rem;margin:0}
+.dl dt{color:var(--muted)} .dl dd{margin:0}
+.lvl-ok{color:var(--ok);font-weight:600}.lvl-warn{color:var(--warn);font-weight:600}.lvl-bad{color:var(--bad);font-weight:600}
+
+/* Barres de prix posé */
+.bars{display:grid;grid-template-columns:minmax(120px,210px) 1fr;gap:.55rem 1rem;align-items:center;font-size:.9rem}
+.bars .lbl{min-width:0}
+.track{position:relative;height:22px;background:linear-gradient(to right,var(--line) 1px,transparent 1px) 0 0/16.666% 100%;border-right:1px solid var(--line)}
+.bar{position:absolute;top:3px;bottom:3px;background:var(--lake);border-radius:2px}
+.bar.alt{background:var(--ember)}
+.bar.end span{left:auto;right:calc(100% + 6px)}
+.bar span{position:absolute;left:calc(100% + 6px);top:-2px;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--ink)}
+.axis{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:.35rem;vertical-align:-1px}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem}
+.duo > *{min-width:0}
+.duo img,.trio img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.trio > *{min-width:0}
+ol.steps{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.7rem;max-width:70ch}
+ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem;max-width:70ch}
+footer{padding-block:2rem 3rem;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+footer p + p{margin-top:.5rem}
+
+@media (max-width:760px){
+  .hero-text,.formule,.terrains,.duo{grid-template-columns:1fr}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .kv,.trio{grid-template-columns:1fr}
+  .bars{grid-template-columns:1fr;gap:.15rem}
+  .bars .track{margin-bottom:.6rem;margin-right:5.5rem}
+}
+@media print{
+  section{break-inside:auto;padding-block:1.6rem}
+  .formule,.terrain,.duo,table,.verdict,.bars{break-inside:avoid}
+  h2,h3{break-after:avoid}
+  body{font-size:11.5pt}
+}
+
+.model-head{display:grid;grid-template-columns:1.2fr 1fr;gap:1.8rem;align-items:end}
+.model-head > *{min-width:0}
+.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;gap:1rem}
+.gallery > *{min-width:0}
+.gallery img{display:block;width:100%;height:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.status{font-size:.72rem;font-weight:600;padding:.08rem .35rem;border-radius:3px;white-space:nowrap}
+.status.on{background:var(--lake-soft);color:var(--lake)}
+.status.off{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.status.no{background:var(--ember-soft);color:var(--bad)}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem 1rem}
+.photos figure{margin:0;min-width:0;display:flex;flex-direction:column;gap:.3rem}
+.photos img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.photos figcaption{padding-top:0;font-size:.82rem;color:var(--ink)}
+.photos figcaption span{color:var(--muted)}
+@media (max-width:760px){.model-head,.gallery,.photos{grid-template-columns:1fr}}
+.variants{display:grid;grid-template-columns:repeat(2,1fr);gap:1.6rem}
+.variant{min-width:0;display:flex;flex-direction:column;gap:.7rem;border-top:2px solid var(--ink);padding-top:.9rem}
+.variant.pick{border-top-color:var(--ember)}
+.timeline{display:grid;grid-template-columns:minmax(110px,170px) 1fr;gap:.9rem 1.2rem}
+.timeline dt{font-family:var(--display);font-weight:700}
+.timeline dd{margin:0;min-width:0}
+@media (max-width:760px){.variants,.timeline{grid-template-columns:1fr}.timeline dd{margin-bottom:.6rem}}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <figure>
+    <img src="img/05-espace-wellness.jpg" alt="Sur une terrasse en bois, un petit sauna vitré, un bain froid en bois et une douche extérieure parmi les pins.">
+  </figure>
+  <p class="cap">Visuel d'ambiance généré par IA. Ce n'est pas une photo de produit ni d'un lieu réel.</p>
+  <div class="hero-text">
+    <div class="stack">
+      <p class="eyebrow">Business plan · 27 novembre 2026</p>
+      <h1>Que lancer en 2027 avec 30&nbsp;000&nbsp;€</h1>
+    </div>
+    <p class="lede">Quatre façons d'utiliser 30&nbsp;000&nbsp;€ pour démarrer dans le sauna et le logement insolite, chiffrées avec les mêmes hypothèses, et celle que nous retenons.</p>
+  </div>
+  <div class="facts">
+    <div><b>30&nbsp;k€</b><span>Budget de la variante retenue, sans emprunt</span></div>
+    <div><b>37,8&nbsp;k€</b><span>Chiffre d'affaires annuel hors taxes en régime de croisière, hypothèse médiane</span></div>
+    <div><b>17,3&nbsp;k€</b><span>Résultat avant votre rémunération, hypothèse médiane</span></div>
+    <div><b>1&nbsp;120</b><span>Entrées par an pour couvrir les charges, sans aucune prestation aux entreprises</span></div>
+  </div>
+</header>
+
+<section class="stack-lg" id="reponse">
+  <div class="stack">
+    <p class="eyebrow">La réponse</p>
+    <h2>Avec 30&nbsp;000&nbsp;€, on lance le sauna, pas encore les maisons</h2>
+  </div>
+  <div class="verdict">
+    <p><strong>Une maison miroir posée coûte environ 115&nbsp;k€.</strong> Avec 30&nbsp;k€ d'apport, il faudrait emprunter 80&nbsp;k€, et une seule maison ne rembourse pas cet emprunt dans nos prévisions.</p>
+    <p><strong>Un sauna sur remorque avec bains froids tient dans 30&nbsp;k€ sans emprunt.</strong> Il peut dégager environ 17&nbsp;k€ par an en hypothèse médiane, et il crée ce qui manque aujourd'hui&nbsp;: des clients, des avis et un bilan à montrer à une banque.</p>
+    <p><strong>Sa saison va d'octobre à avril.</strong> C'est l'inverse de la saison du bateau&nbsp;: les deux activités se complètent au lieu de se gêner.</p>
+  </div>
+  <p class="muted">Tous les chiffres de ce plan sont des prévisions construites sur des hypothèses écrites plus bas. Aucun n'est un résultat observé. Les prix du matériel sont des fourchettes à remplacer par des devis.</p>
+</section>
+
+<section class="stack-lg" id="variantes">
+  <div class="stack">
+    <p class="eyebrow">Quatre variantes</p>
+    <h2>Ce que 30&nbsp;000&nbsp;€ permettent, de la plus sûre à la plus risquée</h2>
+  </div>
+  <div class="variants">
+    <article class="variant pick">
+      <span class="tag">Variante 1 · retenue</span>
+      <h3>Le sauna nomade</h3>
+      <p>Un sauna à bois de 6 à 8 places sur remorque, deux bains froids, une tente vestiaire. Séances ouvertes au public trois jours par semaine sur un site partenaire, et prestations privées pour des mariages, des séminaires ou des hôtels.</p>
+      <div class="kv">
+        <div><b>30&nbsp;k€</b><span>Investissement, sans emprunt</span></div>
+        <div><b>+17,3&nbsp;k€</b><span>Résultat médian par an</span></div>
+        <div><b>−0,9&nbsp;k€</b><span>Résultat prudent par an</span></div>
+      </div>
+      <p class="muted">Risque&nbsp;: faible. Le matériel se revend et se déplace. Délai&nbsp;: 2 à 4 mois.</p>
+    </article>
+    <article class="variant">
+      <span class="tag">Variante 2</span>
+      <h3>Le sauna flottant chez un partenaire</h3>
+      <p>Un sauna flottant de 8 à 10 places amarré sur l'étang d'un domaine ou d'un camping, vendu en séances et en privatisations. Le partenaire touche une part des recettes.</p>
+      <div class="kv">
+        <div><b>39 à 53&nbsp;k€</b><span>Investissement&nbsp;: 30&nbsp;k€ et 10 à 25&nbsp;k€ de prêts</span></div>
+        <div><b>+9,4&nbsp;k€</b><span>Résultat médian par an</span></div>
+        <div><b>−0,8&nbsp;k€</b><span>Résultat prudent par an</span></div>
+      </div>
+      <p class="muted">Risque&nbsp;: moyen. Il faut d'abord trouver l'étang, et le statut d'un sauna flottant n'est pas clair en France. Délai&nbsp;: 6 à 12 mois.</p>
+    </article>
+    <article class="variant">
+      <span class="tag">Variante 3</span>
+      <h3>Une maison et un sauna, à crédit</h3>
+      <p>Une maison vitrée d'entrée de gamme de 18&nbsp;m² et un sauna tonneau chez un partenaire, financés par 30&nbsp;k€ d'apport, un prêt d'honneur et un prêt bancaire de 80&nbsp;k€.</p>
+      <div class="kv">
+        <div><b>95 à 120&nbsp;k€</b><span>Investissement, dont 80&nbsp;k€ empruntés</span></div>
+        <div><b>−5,8&nbsp;k€</b><span>Résultat médian par an</span></div>
+        <div><b>−19,8&nbsp;k€</b><span>Résultat prudent par an</span></div>
+      </div>
+      <p class="muted">Risque&nbsp;: élevé. Une seule maison ne couvre pas l'emprunt. Une banque suit rarement un premier projet sans historique.</p>
+    </article>
+    <article class="variant">
+      <span class="tag">Variante 4</span>
+      <h3>Une maison miroir en partenariat avec ÖÖD</h3>
+      <p>ÖÖD reste propriétaire de la maison et prend une part des loyers. La mise de départ affichée par ÖÖD est de 30 à 40&nbsp;k€ par maison, à titre indicatif.</p>
+      <div class="kv">
+        <div><b>45 à 65&nbsp;k€</b><span>Mise et raccordements, selon nos estimations</span></div>
+        <div><b>−2,5&nbsp;k€</b><span>Résultat médian après la part d'ÖÖD, selon nos hypothèses</span></div>
+        <div><b>19,6&nbsp;k€</b><span>Profit annuel dans le simulateur d'ÖÖD</span></div>
+      </div>
+      <p class="muted">Risque&nbsp;: moyen à élevé. ÖÖD exige un site avec permis, réseaux et clientèle existante. Son simulateur suppose 5&nbsp;400&nbsp;€ de recettes par mois, soit bien plus que notre hypothèse médiane.</p>
+    </article>
+  </div>
+  <div class="stack">
+    <h3>Et une cinquième piste, qu'on ne peut pas encore chiffrer</h3>
+    <p><strong>Reprendre un camping municipal en gérance.</strong> Deux consultations sont ouvertes&nbsp;: Le Frasnois (Jura), jusqu'au 15 décembre 2026, et Verchaix (Haute-Savoie), jusqu'au 18 janvier 2027. Les 30&nbsp;k€ serviraient au fonds de roulement, à la caution et à un premier sauna. Sans le dossier de la mairie, ni la redevance ni le chiffre d'affaires ne sont connus. Demander les dossiers ne coûte rien.</p>
+  </div>
+</section>
+
+<section class="stack-lg" id="plan">
+  <div class="stack">
+    <p class="eyebrow">Variante retenue</p>
+    <h2>Le plan du sauna nomade</h2>
+  </div>
+
+  <div class="duo">
+    <div class="stack">
+      <h3>Où vont les 30&nbsp;000&nbsp;€</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Poste</th><th class="r">Budget</th><th class="r">Fourchette</th></tr>
+        <tr><td>Sauna à bois 6–8 places sur remorque</td><td class="r">18&nbsp;000&nbsp;€</td><td class="r">12 à 30&nbsp;k€</td></tr>
+        <tr><td>2 bains froids et un groupe de refroidissement</td><td class="r">4&nbsp;000&nbsp;€</td><td class="r">2,5 à 5&nbsp;k€</td></tr>
+        <tr><td>Tente vestiaire, douche, caillebotis, mobilier, linge</td><td class="r">3&nbsp;000&nbsp;€</td><td class="r">2 à 3,5&nbsp;k€</td></tr>
+        <tr><td>Site de réservation, identité, photos, faits en interne</td><td class="r">1&nbsp;000&nbsp;€</td><td class="r">0,5 à 2&nbsp;k€</td></tr>
+        <tr><td>Société, assurances de la première année, contrôles</td><td class="r">2&nbsp;000&nbsp;€</td><td class="r">1,5 à 2,5&nbsp;k€</td></tr>
+        <tr><td>Trésorerie de départ</td><td class="r">2&nbsp;000&nbsp;€</td><td class="r">1,5 à 2&nbsp;k€</td></tr>
+        <tr class="total"><td>Total</td><td class="r">30&nbsp;000&nbsp;€</td><td class="r">20 à 45&nbsp;k€</td></tr>
+      </table></div>
+      <p class="muted">Fourchettes estimées. Le véhicule qui tracte la remorque est supposé déjà disponible&nbsp;; sinon, il faut ajouter 10 à 25&nbsp;k€ ou le louer. Aucun prix public français n'a été trouvé pour un sauna sur remorque&nbsp;: le poste principal dépend du devis.</p>
+    </div>
+    <div class="stack">
+      <img src="img/10-sauna-interieur.jpg" alt="Intérieur d'un sauna en bois avec poêle, seau et grande baie vitrée.">
+      <p class="cap">Visuel d'ambiance généré par IA.</p>
+      <h3>Ce que le client achète</h3>
+      <ul class="plain">
+        <li><strong>Une séance d'une heure et quart</strong>, sauna et bain froid, à 22&nbsp;€. Les deux saunas flottants français vendent la leur 20 et 25&nbsp;€.</li>
+        <li><strong>Une privatisation</strong> pour un groupe, un anniversaire, un enterrement de vie de jeune fille.</li>
+        <li><strong>Une prestation à la journée</strong> pour un mariage, un séminaire ou un hôtel, à 900&nbsp;€ hors taxes avec vous sur place.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="stack">
+    <h3>Le compte d'une année en régime de croisière</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th></th><th class="r">Prudente</th><th class="r">Médiane</th><th class="r">Optimiste</th></tr>
+      <tr><td>Semaines d'ouverture au public</td><td class="r">30</td><td class="r">30</td><td class="r">30</td></tr>
+      <tr><td>Séances par semaine (3 par jour, 3 jours)</td><td class="r">9</td><td class="r">9</td><td class="r">9</td></tr>
+      <tr><td>Remplissage des 8 places</td><td class="r">35&nbsp;%</td><td class="r">50&nbsp;%</td><td class="r">65&nbsp;%</td></tr>
+      <tr><td>Entrées vendues dans l'année</td><td class="r">756</td><td class="r">1&nbsp;080</td><td class="r">1&nbsp;404</td></tr>
+      <tr><td>Prix de la séance, taxes comprises</td><td class="r">20&nbsp;€</td><td class="r">22&nbsp;€</td><td class="r">25&nbsp;€</td></tr>
+      <tr><td>Recettes des séances, hors taxes</td><td class="r">12&nbsp;600&nbsp;€</td><td class="r">19&nbsp;800&nbsp;€</td><td class="r">29&nbsp;250&nbsp;€</td></tr>
+      <tr><td>Prestations privées dans l'année</td><td class="r">10 × 700&nbsp;€</td><td class="r">20 × 900&nbsp;€</td><td class="r">30 × 900&nbsp;€</td></tr>
+      <tr><td>Recettes des prestations, hors taxes</td><td class="r">7&nbsp;000&nbsp;€</td><td class="r">18&nbsp;000&nbsp;€</td><td class="r">27&nbsp;000&nbsp;€</td></tr>
+      <tr class="total"><td>Chiffre d'affaires hors taxes</td><td class="r">19&nbsp;600&nbsp;€</td><td class="r">37&nbsp;800&nbsp;€</td><td class="r">56&nbsp;250&nbsp;€</td></tr>
+      <tr><td>Charges de l'année</td><td class="r">20&nbsp;500&nbsp;€</td><td class="r">20&nbsp;500&nbsp;€</td><td class="r">20&nbsp;500&nbsp;€</td></tr>
+      <tr class="total"><td>Résultat avant votre rémunération</td><td class="r">−900&nbsp;€</td><td class="r">17&nbsp;300&nbsp;€</td><td class="r">35&nbsp;750&nbsp;€</td></tr>
+    </table></div>
+    <p class="muted">Les charges de 20&nbsp;500&nbsp;€ se décomposent ainsi&nbsp;: bois 2&nbsp;500, redevances d'emplacement 3&nbsp;000, assurances 2&nbsp;500, entretien, linge et consommables 3&nbsp;000, carburant 3&nbsp;000, publicité 3&nbsp;000, logiciel et frais bancaires 1&nbsp;500, comptable 2&nbsp;000. Ce sont des estimations.</p>
+  </div>
+
+  <div class="duo">
+    <div class="stack">
+      <h3>La première saison, d'octobre 2027 à mars 2028</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th></th><th class="r">Prudente</th><th class="r">Médiane</th></tr>
+        <tr><td>Remplissage sur 26 semaines</td><td class="r">30&nbsp;%</td><td class="r">40&nbsp;%</td></tr>
+        <tr><td>Entrées vendues</td><td class="r">562</td><td class="r">749</td></tr>
+        <tr><td>Prestations privées</td><td class="r">6</td><td class="r">12</td></tr>
+        <tr><td>Chiffre d'affaires hors taxes</td><td class="r">13&nbsp;560&nbsp;€</td><td class="r">24&nbsp;530&nbsp;€</td></tr>
+        <tr><td>Charges, au prorata</td><td class="r">14&nbsp;350&nbsp;€</td><td class="r">14&nbsp;350&nbsp;€</td></tr>
+        <tr class="total"><td>Résultat</td><td class="r">−790&nbsp;€</td><td class="r">10&nbsp;180&nbsp;€</td></tr>
+      </table></div>
+      <p class="muted">Une première saison sans notoriété se remplit moins. Dans le pire cas chiffré, vous perdez moins de 1&nbsp;000&nbsp;€ et vous gardez le matériel.</p>
+    </div>
+    <div class="stack">
+      <h3>Ce qui fait gagner ou perdre</h3>
+      <ul class="plain">
+        <li><strong>Le seuil de rentabilité est de 20&nbsp;500&nbsp;€ de chiffre d'affaires</strong>, soit environ 1&nbsp;120 entrées à 22&nbsp;€ si vous ne vendez aucune prestation privée.</li>
+        <li><strong>Les prestations privées font la différence.</strong> Vingt journées à 900&nbsp;€ rapportent presque autant que toute la saison de séances publiques.</li>
+        <li><strong>L'emplacement décide du remplissage.</strong> Il faut un lieu fréquenté en hiver&nbsp;: un port, une plage, une base nautique, un domaine qui reçoit du public.</li>
+        <li><strong>Ce n'est pas un salaire pour deux.</strong> En hypothèse médiane, l'activité paie un complément de revenu à une personne.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="stack-lg" id="calendrier">
+  <div class="stack">
+    <p class="eyebrow">Calendrier</p>
+    <h2>2027, mois par mois</h2>
+  </div>
+  <dl class="timeline">
+    <dt>Décembre à février</dt>
+    <dd><strong>Tester avant d'acheter, pour moins de 3&nbsp;000&nbsp;€.</strong> Louer un sauna mobile pour deux ou trois week-ends, vendre des places en prévente, compter les inscrits. Demander les dossiers de Verchaix et du Frasnois. Rencontrer le réseau Initiative de votre département pour un prêt d'honneur.</dd>
+    <dt>Mars</dt>
+    <dd><strong>Décider sur des chiffres.</strong> Si les week-ends de test se remplissent à plus de 40&nbsp;%, commander le sauna. Sinon, changer d'emplacement ou de formule avant d'engager les 30&nbsp;k€.</dd>
+    <dt>Avril à septembre</dt>
+    <dd><strong>Préparer pendant la saison du bateau.</strong> Fabrication du sauna (6 à 12 semaines), création de la société, assurance, site de réservation, demande d'autorisation pour l'emplacement, démarchage des lieux de mariage et des hôtels pour l'automne.</dd>
+    <dt>Octobre</dt>
+    <dd><strong>Ouvrir.</strong> Trois jours par semaine sur le site retenu, premières prestations privées. Une liste d'e-mails et des avis dès la première semaine.</dd>
+    <dt>Mars 2028</dt>
+    <dd><strong>Faire le bilan et passer à l'étape suivante.</strong> Avec une saison de comptes, une banque écoute. C'est le moment de financer un site fixe&nbsp;: un sauna flottant ou deux maisons chez un partenaire, pour 200 à 300&nbsp;k€.</dd>
+  </dl>
+</section>
+
+<section class="stack-lg" id="financement">
+  <div class="stack">
+    <p class="eyebrow">Financement</p>
+    <h2>Comment 30&nbsp;000&nbsp;€ peuvent devenir 60 à 120&nbsp;k€</h2>
+    <p>Si vous préférez une variante plus ambitieuse, voici les leviers. Les montants sont ceux publiés par les réseaux, relevés en ligne.</p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Levier</th><th>Ce qu'il apporte</th><th>Condition</th></tr>
+    <tr><td><strong>Prêt d'honneur Initiative France</strong></td><td>Prêt personnel à taux zéro, environ 10&nbsp;000&nbsp;€ en moyenne, qui s'ajoute à votre apport</td><td>Passer devant un comité avec un prévisionnel</td></tr>
+    <tr><td><strong>Prêt bancaire</strong></td><td>Les banques demandent en général 20 à 30&nbsp;% d'apport&nbsp;: 30&nbsp;k€ et un prêt d'honneur ouvrent la porte à 60 ou 80&nbsp;k€ de prêt</td><td>Un prévisionnel solide. Un historique d'activité aide beaucoup</td></tr>
+    <tr><td><strong>Garantie Bpifrance</strong></td><td>Couvre jusqu'à 60&nbsp;% du prêt et limite votre caution personnelle</td><td>Demandée par la banque</td></tr>
+    <tr><td><strong>Crédit-bail</strong></td><td>Finance le sauna ou la remorque sans apport, sur 3 à 7 ans</td><td>Loyers à intégrer aux charges</td></tr>
+    <tr><td><strong>Préventes</strong></td><td>Cartes cadeaux et abonnements « membres fondateurs » vendus avant l'ouverture</td><td>Une audience&nbsp;: c'est là que votre savoir-faire digital compte</td></tr>
+  </table></div>
+  <div class="verdict">
+    <p><strong>Notre conseil&nbsp;: ne pas emprunter la première année.</strong> Le sauna nomade tient dans les 30&nbsp;k€. Garder l'emprunt pour 2028, quand vous aurez des comptes et des clients à montrer.</p>
+  </div>
+</section>
+
+<section class="stack-lg" id="risques">
+  <div class="stack">
+    <p class="eyebrow">Risques</p>
+    <h2>Ce qui peut mal tourner</h2>
+  </div>
+  <div class="tbl-wrap"><table>
+    <tr><th>Risque</th><th>Ce qui le limite</th></tr>
+    <tr><td>La mairie refuse l'emplacement sur une plage ou un port</td><td>Demander dès janvier&nbsp;; prévoir un second site sur terrain privé (domaine, camping, base nautique)</td></tr>
+    <tr><td>Les séances ne se remplissent pas</td><td>Les week-ends de test de l'hiver, avant tout achat</td></tr>
+    <tr><td>L'été est une saison morte pour le sauna dans le Sud</td><td>C'est la saison du bateau&nbsp;; les mariages d'été compensent une partie</td></tr>
+    <tr><td>Un concurrent s'installe</td><td>Des salles de sport de Montpellier ont déjà sauna et bain froid, et un club se prépare à Marseille. Aucun sauna ouvert au public en plein air n'a été trouvé, mais Instagram et Google Maps n'ont pas pu être fouillés</td></tr>
+    <tr><td>Un bain froid partagé est soumis aux règles des bains collectifs</td><td>Poser la question par écrit à l'agence régionale de santé avant d'acheter les bains</td></tr>
+    <tr><td>Vent, pluie, casse, vandalisme</td><td>Assurance, site clos la nuit, remorque rentrée hors service</td></tr>
+  </table></div>
+</section>
+
+<footer>
+  <p><strong>Méthode.</strong> Ce plan reprend les coûts, les prix et les hypothèses de l'étude menée du 19 au 27 novembre 2026 (dossiers <code>etude</code>, <code>etude/v2</code> et <code>etude/v4</code> du projet). Les calculs ont été refaits pour ce document.</p>
+  <p><strong>Limites.</strong> Les recettes, les charges et les résultats sont des prévisions. Les prix du matériel sont des fourchettes estimées, sans devis. Le statut fiscal et social, la TVA et le choix de la société sont à voir avec un expert-comptable. Les montants des prêts d'honneur et les règles bancaires sont des relevés en ligne, pas recoupés.</p>
+  <p><strong>Variante 3.</strong> Résultat calculé avec un excédent d'exploitation de 12&nbsp;k€ (médian) ou −2&nbsp;k€ (prudent) pour une maison, un loyer de terrain de 4&nbsp;k€ et une annuité de 13,8&nbsp;k€ pour 80&nbsp;k€ empruntés sur 7 ans à 5&nbsp;%. <strong>Variante 2.</strong> Chiffre d'affaires de 18, 30 ou 40&nbsp;k€, 15&nbsp;% reversés au partenaire, 12,5&nbsp;k€ de charges et une annuité de 3,5&nbsp;k€.</p>
+</footer>
+
+</div>

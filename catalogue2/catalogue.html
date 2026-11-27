@@ -129,7 +129,12 @@ footer p + p{margin-top:.5rem}
 .status.on{background:var(--lake-soft);color:var(--lake)}
 .status.off{background:transparent;color:var(--muted);border:1px solid var(--line)}
 .status.no{background:var(--ember-soft);color:var(--bad)}
-@media (max-width:760px){.model-head,.gallery{grid-template-columns:1fr}}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem 1rem}
+.photos figure{margin:0;min-width:0;display:flex;flex-direction:column;gap:.3rem}
+.photos img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px}
+.photos figcaption{padding-top:0;font-size:.82rem;color:var(--ink)}
+.photos figcaption span{color:var(--muted)}
+@media (max-width:760px){.model-head,.gallery,.photos{grid-template-columns:1fr}}
 </style>
 
 <div class="wrap">
@@ -251,6 +256,23 @@ footer p + p{margin-top:.5rem}
     <p class="muted">Annonces en ligne lues sur lesiteimmo.com, pages de <a href="https://www.lesiteimmo.com/acheter/terrain/gerardmer-88400">Gérardmer</a>, d'<a href="https://www.lesiteimmo.com/acheter/terrain/aiguebelette-le-lac-73610">Aiguebelette-le-Lac</a>, des <a href="https://www.lesiteimmo.com/acheter/terrain/villages-du-lac-de-paladru-38850">Villages du Lac de Paladru</a> et de <a href="https://www.lesiteimmo.com/acheter/terrain/savines-le-lac-05160">Savines-le-Lac</a>.</p>
   </div>
 
+  <div class="stack">
+    <h3>Les vraies photos des annonces</h3>
+    <p class="muted">Photos publiées par les agences sur les annonces, reprises ici pour le repérage. Chaque légende ouvre la fiche.</p>
+    <div class="photos">
+      <figure><img src="photos/cornimont-1.jpg" alt="Prairie en pente douce face à une vallée boisée des Vosges."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/cornimont-88310/34258373">Cornimont, 5 600 m², 140 000 €</a><br><span>La prairie et la vue vers la vallée</span></figcaption></figure>
+      <figure><img src="photos/cornimont-2.jpg" alt="Vue depuis le terrain sur le village en contrebas et les collines."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/cornimont-88310/34258373">Cornimont</a><br><span>Le village en contrebas</span></figcaption></figure>
+      <figure><img src="photos/cornimont-4.jpg" alt="Vue large sur le village et les forêts depuis le haut du terrain."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/cornimont-88310/34258373">Cornimont</a><br><span>Depuis le haut du terrain</span></figcaption></figure>
+      <figure><img src="photos/aiguebelette-le-lac-2.jpg" alt="Pré en pente avec un chalet en bois et une falaise en arrière-plan."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/aiguebelette-le-lac-73610/33199665">Aiguebelette-le-Lac, 3 531 m², 170 000 €</a><br><span>Le coteau et le massif de l’Épine</span></figcaption></figure>
+      <figure><img src="photos/aiguebelette-le-lac-3.jpg" alt="Pré ensoleillé en lisière de forêt, chalet voisin."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/aiguebelette-le-lac-73610/33199665">Aiguebelette-le-Lac</a><br><span>La partie haute, en lisière</span></figcaption></figure>
+      <figure><img src="photos/saint-alban-de-montbel-1.jpg" alt="Terrain plat en herbe entre des maisons de village."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/saint-alban-de-montbel-73610/31113236">Saint-Alban-de-Montbel, 793 m², 109 000 €</a><br><span>Terrain plat, entouré de maisons</span></figcaption></figure>
+      <figure><img src="photos/charancieu-1.jpg" alt="Terrain en pente avec vue lointaine sur la plaine."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/charancieu-38490/33700039">Charancieu, 2 738 m², 115 000 €</a><br><span>Vue dégagée vers la plaine</span></figcaption></figure>
+      <figure><img src="photos/vagney-1.jpg" alt="Terrain plat en terre battue bordé d’arbres, immeubles du bourg à côté."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/vagney-88120/33381742">Vagney, 2 462 m², 160 000 €</a><br><span>En plein bourg, sans vue</span></figcaption></figure>
+      <figure><img src="photos/xonrupt-longemer-2.jpg" alt="Terrasse en bois avec table, pré et sapins."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/xonrupt-longemer-88400/34241004">Xonrupt-Longemer, 1 200 m², 159 000 €</a><br><span>Vendu avec un permis pour une maison</span></figcaption></figure>
+    </div>
+    <p class="muted">Les photos confirment le classement : Cornimont a une vraie vue. Vagney est un terrain de bourg sans vue, et Saint-Alban-de-Montbel est enclavé entre des maisons.</p>
+  </div>
+
   <div class="verdict">
     <p><strong>Notre choix en montagne&nbsp;: Cornimont.</strong> C'est le seul terrain qui réunit la taille, la vue et un accord écrit de la mairie. Les Hautes-Vosges reçoivent une clientèle d'Alsace, de Lorraine, du Luxembourg, de Suisse et d'Allemagne, en hiver comme en été. Il n'a pas de lac&nbsp;: la vue lac, dans les Vosges, coûte plus de 220&nbsp;k€.</p>
     <p>À vérifier avant toute offre&nbsp;: que le certificat d'urbanisme couvre un hébergement touristique et pas seulement une maison d'habitation.</p>
@@ -338,10 +360,25 @@ footer p + p{margin-top:.5rem}
   </div>
 
   <div class="stack">
+    <h3>Les vraies photos des annonces</h3>
+    <div class="photos">
+      <figure><img src="photos/valdoie-1.jpg" alt="Étang bordé de forêt, berge en herbe."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/valdoie-90300/32975417">Valdoie, étang de 1,5 ha, 127 200 €</a><br><span>L’étang et sa rive boisée</span></figcaption></figure>
+      <figure><img src="photos/valdoie-2.jpg" alt="Berge enherbée avec deux bancs face à l’étang."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/valdoie-90300/32975417">Valdoie</a><br><span>La berge, côté bancs</span></figcaption></figure>
+      <figure><img src="photos/valdoie-4.jpg" alt="Petite maisonnette à colombages avec garage, à rénover."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/valdoie-90300/32975417">Valdoie</a><br><span>La maisonnette à rénover</span></figcaption></figure>
+      <figure><img src="photos/angeot-1.jpg" alt="Pré clôturé avec un étang en arrière-plan."><figcaption><a href="https://www.lesiteimmo.com/acheter/terrain/angeot-90150/28328949">Angeot, 1 008 m², 78 000 €</a><br><span>Terrain constructible face à l’étang voisin</span></figcaption></figure>
+      <figure><img src="photos/selles-sur-cher-1.jpg" alt="Étang avec îlot, saule et maisons en arrière-plan."><figcaption><a href="https://www.ma-propriete.fr/fr/forestiere/etangs/loir-et-cher/propriete-a-vendre-7-pieces-selles-sur-cher-41-1">Selles-sur-Cher, 249 900 €</a><br><span>L’étang de 6 000 m²</span></figcaption></figure>
+      <figure><img src="photos/selles-sur-cher-2.jpg" alt="Maison de plain-pied avec étage, garage et allée dallée."><figcaption><a href="https://www.ma-propriete.fr/fr/forestiere/etangs/loir-et-cher/propriete-a-vendre-7-pieces-selles-sur-cher-41-1">Selles-sur-Cher</a><br><span>La maison de 135 m²</span></figcaption></figure>
+      <figure><img src="photos/saint-james-1.jpg" alt="Étang entouré de saules et de peupliers."><figcaption><a href="https://www.ma-propriete.fr/fr/forestiere/etangs/manche/domaine-de-peche-prive-avec-chalet-et-activite-touristique-saint-james">Saint-James, 399 000 €</a><br><span>L’un des deux étangs</span></figcaption></figure>
+      <figure><img src="photos/saint-james-2.jpg" alt="Chalet en bois avec terrasse couverte en lisière de forêt."><figcaption><a href="https://www.ma-propriete.fr/fr/forestiere/etangs/manche/domaine-de-peche-prive-avec-chalet-et-activite-touristique-saint-james">Saint-James</a><br><span>Le chalet de 67 m², déjà loué</span></figcaption></figure>
+      <figure><img src="photos/taninges-2.jpg" alt="Petit lac de montagne entouré de saules, sommets en arrière-plan."><figcaption><a href="https://www.ma-propriete.fr/fr/rurale/terrains-de-loisirs/haute-savoie/lac-prive-a-vendre-taninges-74">Taninges, lac privé, 78 000 €</a><br><span>Sous offre, et inconstructible</span></figcaption></figure>
+    </div>
+  </div>
+
+  <div class="stack">
     <h3>Les pièges, vérifiés dans le texte des annonces</h3>
     <div class="tbl-wrap"><table>
       <tr><th>Annonce</th><th class="r">Prix</th><th>Pourquoi ce n'est pas faisable</th></tr>
-      <tr><td><a href="https://www.ma-propriete.fr/fr/rurale/terrains-de-loisirs/haute-savoie/lac-prive-a-vendre-taninges-74">Lac privé à Taninges (Haute-Savoie)</a>, 1,1&nbsp;ha avec île et chalet de 13&nbsp;m²</td><td class="r">78&nbsp;000&nbsp;€</td><td><span class="status no">maisons exclues</span> L'annonce l'écrit&nbsp;: aucune construction nouvelle ni agrandissement. Seule une « petite activité commerciale légère » est envisageable avec la mairie, ce qui pourrait concerner un sauna flottant seul</td></tr>
+      <tr><td><a href="https://www.ma-propriete.fr/fr/rurale/terrains-de-loisirs/haute-savoie/lac-prive-a-vendre-taninges-74">Lac privé à Taninges (Haute-Savoie)</a>, 1,1&nbsp;ha avec île et chalet de 13&nbsp;m²</td><td class="r">78&nbsp;000&nbsp;€</td><td><span class="status no">maisons exclues</span> L'annonce l'écrit&nbsp;: aucune construction nouvelle ni agrandissement. La photo de l'annonce porte en plus un bandeau « sous offre ». Seule une « petite activité commerciale légère » est envisageable avec la mairie, ce qui pourrait concerner un sauna flottant seul</td></tr>
       <tr><td>Domaine de 9,6&nbsp;ha avec trois plans d'eau à La Ferté-sous-Jouarre (Seine-et-Marne)</td><td class="r">118&nbsp;500&nbsp;€</td><td><span class="status no">très contraint</span> Ancienne carrière classée, à une heure de Paris</td></tr>
       <tr><td>Étangs avec chalet de 15 à 20&nbsp;m² dans le Perche, la Sarthe, près de Rennes</td><td class="r">43&nbsp;000 à 89&nbsp;000&nbsp;€</td><td><span class="status no">terrains de loisirs</span> Vendus comme terrains de loisirs&nbsp;: rien n'indique qu'on puisse y construire</td></tr>
       <tr><td>Étang de 6&nbsp;000&nbsp;m² en Haute-Vienne</td><td class="r">35&nbsp;000&nbsp;€</td><td><span class="status no">zone protégée</span> « Zone classée et protégée » selon l'annonce</td></tr>
@@ -409,7 +446,7 @@ footer p + p{margin-top:.5rem}
   <p><strong>Méthode et limites.</strong> Trois recherches menées le 27 novembre 2026 (montagne, étangs, appels à projets) ont trouvé les annonces par moteur de recherche. J'ai ensuite relu moi-même les annonces sur les sites qui s'ouvrent depuis la session&nbsp;: lesiteimmo.com, ma-propriete.fr, gestion-camping.com et gravitao.com. Celles marquées « en ligne » en viennent. Les autres sites refusent les lectures automatiques&nbsp;: leurs annonces restent à ouvrir à la main.</p>
   <p><strong>Ce que les annonces ne disent pas.</strong> Aucune ne garantit qu'un hébergement touristique est autorisé. Le zonage, le risque d'inondation et les protections naturelles ne sont contrôlés pour aucun terrain. Les règles d'urbanisme citées ont été recoupées sur plusieurs sources, pas relues sur les textes officiels.</p>
   <p><strong>Prix.</strong> Les prix ÖÖD ont été relus sur oodhouse.com le 25 novembre 2026. Les prix des saunas et des bains sont des relevés non recoupés. Les budgets posés, les recettes et les excédents sont des estimations.</p>
-  <p><strong>Images.</strong> Les huit visuels sont générés par IA. Aucun ne représente un produit, un terrain ou un lieu réel. Le détail des recherches est dans le dossier <code>etude/v4</code> du projet.</p>
+  <p><strong>Images.</strong> Les visuels marqués « Visuel IA » sont générés et ne représentent aucun lieu réel. Les photos des sections « Les vraies photos des annonces » sont celles publiées par les agences sur les annonces. Le détail des recherches est dans le dossier <code>etude/v4</code> du projet.</p>
 </footer>
 
 </div>
